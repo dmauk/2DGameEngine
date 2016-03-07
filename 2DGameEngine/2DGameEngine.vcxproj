@@ -119,6 +119,7 @@
   <ItemGroup>
     <ClCompile Include="ErrorHandling.cpp" />
     <ClCompile Include="GLSLProgram.cpp" />
+    <ClCompile Include="IOManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -126,6 +127,7 @@
   <ItemGroup>
     <ClInclude Include="ErrorHandling.h" />
     <ClInclude Include="GLSLProgram.h" />
+    <ClInclude Include="IOManager.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Vertex.h" />

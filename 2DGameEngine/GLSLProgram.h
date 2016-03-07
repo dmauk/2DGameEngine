@@ -10,7 +10,7 @@ public:
 	void compileShaders(const string& vertexShaderFilePath, const string& fragmentShaderFilePath);
 	void linkShaders();
 	void addAttribute(const string& attributeName);
-	GLuint getUniformLocation(const string& uniformName);
+	GLint getUniformLocation(const string& uniformName);
 	void use();
 	void unuse();
 private:
