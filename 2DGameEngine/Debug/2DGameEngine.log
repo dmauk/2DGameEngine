@@ -1,5 +1,4 @@
-﻿  IOManager.cpp
-c:\users\dan\documents\visual studio 2015\projects\2dgameengine\2dgameengine\iomanager.cpp(19): warning C4244: 'initializing': conversion from 'std::streamoff' to 'int', possible loss of data
-c:\users\dan\documents\visual studio 2015\projects\2dgameengine\2dgameengine\iomanager.cpp(25): warning C4244: '-=': conversion from 'std::streamoff' to 'int', possible loss of data
+﻿  MainGame.cpp
+c:\users\dan\documents\visual studio 2015\projects\2dgameengine\2dgameengine\maingame.cpp(57): warning C4305: '+=': truncation from 'double' to 'float'
   2DGameEngine.vcxproj -> C:\Users\Dan\documents\visual studio 2015\Projects\2dGameEngine\Debug\2DGameEngine.exe
   2DGameEngine.vcxproj -> C:\Users\Dan\documents\visual studio 2015\Projects\2dGameEngine\Debug\2DGameEngine.pdb (Partial PDB)

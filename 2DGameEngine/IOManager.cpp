@@ -3,7 +3,7 @@
 #include<fstream>
 using namespace std;
 
-bool IOManager::readFileToBuffer(string filePath, vector<char>& buffer)
+bool IOManager::readFileToBuffer(string filePath, vector<unsigned char>& buffer)
 {
 	ifstream file(filePath, ios::binary);
 	if (file.fail())
@@ -25,7 +25,7 @@ bool IOManager::readFileToBuffer(string filePath, vector<char>& buffer)
 	fileSize -= file.tellg();
 
 	buffer.resize(fileSize);
-	file.read(&(buffer[0]), fileSize);
+	file.read((char*)&(buffer[0]), fileSize);//Read everything as if they were signed chars
 	file.close();
 
 	return true;

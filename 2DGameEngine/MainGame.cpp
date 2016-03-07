@@ -24,7 +24,7 @@ void MainGame::initSystems()
 	//initialize sdl
 	SDL_Init(SDL_INIT_EVERYTHING);
 
-	_window = SDL_CreateWindow("Game Engine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _screenWidth, _screenHeight, SDL_WINDOW_OPENGL);
+	_window = SDL_CreateWindow("Game Engine v0.01", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _screenWidth, _screenHeight, SDL_WINDOW_OPENGL);
 	if (_window == nullptr) {
 		fatalError("SDL Window could not be created!");
 	}
@@ -54,7 +54,7 @@ void MainGame::initShaders()
 void MainGame::gameLoop() {
 	while (_gameState != GameState::EXIT) {
 		processInput();
-		_time += 0.01;
+		_time += 0.015;
 		drawGame();
 	}
 }

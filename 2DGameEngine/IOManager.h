@@ -6,6 +6,6 @@ using namespace std;
 class IOManager
 {
 public:
-	static bool readFileToBuffer(const string filePath,vector<char>& buffer);
+	static bool readFileToBuffer(const string filePath,vector<unsigned char>& buffer);
 };
 
