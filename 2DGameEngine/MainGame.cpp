@@ -1,20 +1,8 @@
 #include "MainGame.h"
+#include "ErrorHandling.h"
 
-void fatalError(string errorString) {
-	cout << errorString << endl;
-	cout << "Enter any key to quit";
-	int tmp;
-	cin >> tmp;
-	SDL_Quit();
-	exit(1);
-}
-
-MainGame::MainGame()
+MainGame::MainGame() : _screenWidth(1024), _screenHeight(768), _gameState(GameState::PLAY), _time(0) //Initialization list
 {
-	_window = nullptr;
-	_screenWidth = 1024;
-	_screenHeight = 768;
-	_gameState = GameState::PLAY;
 }
 
 
@@ -25,6 +13,9 @@ MainGame::~MainGame()
 void MainGame::run()
 {
 	initSystems();
+
+	_sprite.init(-1.0f,-1.0f, 2.0f, 2.0f);
+
 	gameLoop();
 }
 
@@ -48,11 +39,22 @@ void MainGame::initSystems()
 
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	glClearColor(0.0f,0.0f,1.0f,1.0f);
+
+	initShaders();
+}
+
+void MainGame::initShaders()
+{
+	_colorProgram.compileShaders("Shaders/colorShading.vert","Shaders/colorShading.frag");
+	_colorProgram.addAttribute("vertexPosition");
+	_colorProgram.addAttribute("vertexColor");
+	_colorProgram.linkShaders();
 }
 
 void MainGame::gameLoop() {
 	while (_gameState != GameState::EXIT) {
 		processInput();
+		_time += 0.01;
 		drawGame();
 	}
 }
@@ -72,14 +74,19 @@ void MainGame::processInput() {
 }
 
 void MainGame::drawGame() {
+	//Set base depth to 1.0
 	glClearDepth(1.0);
+
+	//Clear the color and depth buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnableClientState(GL_COLOR_ARRAY);
-	glBegin(GL_TRIANGLES);
-	glColor3f(1.0f, 1.0f, 0.0f);
-	glVertex2f(0, 0);
-	glVertex2f(0, 500);
-	glVertex2f(500, 500);
-	glEnd();
+	
+	_colorProgram.use();
+	GLuint timeLocation = _colorProgram.getUniformLocation("time");
+	glUniform1f(timeLocation, _time);//Handler to timeLocation in shader
+	_sprite.draw();
+
+	_colorProgram.unuse();
+
+	//Swap our buffer.
 	SDL_GL_SwapWindow(_window);
 }
