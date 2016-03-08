@@ -27,11 +27,11 @@ GLTexture TextureCache::getTexture(string textureFilePath)
 		//Insert it into the map
 		_textureMap.insert(make_pair(textureFilePath, newTexture));
 
-		cout << "Loaded new texture" << endl;
+		cout << "LOADED NEW TEXTURE" << endl;
 
 		return newTexture;
 	}
-	cout << "Loaded new texture" << endl;
+	cout << "USED CACHED TEXTURE" << endl;
 		//If in cache,
 	return mapIterator->second; 
 

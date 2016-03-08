@@ -1,7 +1,7 @@
 #include "MainGame.h"
 #include "ErrorHandling.h"
 
-MainGame::MainGame() : _screenWidth(1024), _screenHeight(768), _gameState(GameState::PLAY), _time(0) //Initialization list
+MainGame::MainGame() : _screenWidth(1024), _screenHeight(768), _gameState(GameState::PLAY), _time(0), _maxFPS(60.0f) //Initialization list
 {
 }
 
@@ -27,6 +27,7 @@ void MainGame::initSystems()
 {
 	//initialize sdl
 	SDL_Init(SDL_INIT_EVERYTHING);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); //Set state before creating window
 
 	_window = SDL_CreateWindow("Game Engine v0.01", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _screenWidth, _screenHeight, SDL_WINDOW_OPENGL);
 	if (_window == nullptr) {
@@ -40,10 +41,10 @@ void MainGame::initSystems()
 	if (error != GLEW_OK) {
 		fatalError("Could not initialize glew");
 	};
-
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	//Display OPENGL VERSION FOR USER
+	cout << "OPENGL VERSION: " << glGetString(GL_VERSION) << endl; //GL_VERSION MACRO IS SET TO WHATEVER OPENGL VERSION YOU ARE RUNNING
 	glClearColor(0.0f,0.0f,1.0f,1.0f);
-
+	SDL_GL_SetSwapInterval(1); //Enable/Disables V-Sync
 	initShaders();
 }
 
@@ -56,11 +57,28 @@ void MainGame::initShaders()
 	_colorProgram.linkShaders();
 }
 
-void MainGame::gameLoop() {
+void MainGame::gameLoop() { //FPS is number of times going through this loop per second essentially
 	while (_gameState != GameState::EXIT) {
+
+		float startTicks = SDL_GetTicks();
 		processInput();
 		_time += 0.015;
 		drawGame();
+		calculateFPS(); 
+		static int count = 0;
+		if (count == 9)
+		{
+			cout << _fps << endl; //Will slow down frame rate //Print every 10
+			count = 0;
+		}
+		count++;
+
+		//Limit FPS //Already handled by vsync however
+		float frameTicks = SDL_GetTicks() - startTicks;
+		if (1000.0f / _maxFPS > frameTicks)
+		{													
+			SDL_Delay(1000.0f / _maxFPS - frameTicks); // 1s / 60 = every 0.0166 second we have a frame. So every 1000*0.0166 = 16.66ms we have one frame. 
+		}											   // if we have more frames in a shorter ms interval then we want to delay to the standard 60s interval. 
 	}
 }
 
@@ -104,5 +122,47 @@ void MainGame::drawGame() {
 	_colorProgram.unuse();
 
 	//Swap our buffer.
+	
 	SDL_GL_SwapWindow(_window);
+}
+
+void MainGame::calculateFPS()
+{
+	static const int NUM_SAMPLES = 10; //Used to average last 10 frames for smooth frame rate measurment
+	static float frameTimes[NUM_SAMPLES];
+	static int currentBufferLocation;
+	static float prevTicks = SDL_GetTicks();
+	float currentTicks;
+	currentTicks = SDL_GetTicks(); 
+	_frameTime = currentTicks - prevTicks; //Will be incorrect on the first reading because it will be 0
+	frameTimes[currentBufferLocation%NUM_SAMPLES] = _frameTime; //Use modulus to do a circular buffer.
+
+	prevTicks = currentTicks;//Update previous ticks.
+	int count;
+	currentBufferLocation++; //Avoid divide by zero by iterating here
+	if (currentBufferLocation < NUM_SAMPLES)//In the first few moments, the averages will based off numbers 1- 10 rather than 10 for accuracy.
+	{
+		count = currentBufferLocation;
+	}
+	else
+	{
+		count = NUM_SAMPLES;//Eventually everything will be averaged by NUM_SAMPLES or 10
+	}
+	
+	float frameAverage = 0;
+	for(int i = 0; i < count; i++)
+	{
+		frameAverage += frameTimes[i];
+	}
+	frameAverage /= count;
+
+	if (frameAverage > 0)
+	{
+		_fps = 1000.0f / frameAverage; //frameAverage = FPMS -> How many frames is that a second? 1 second = 1000 ms so 1000 / FPMS = FPS
+	}
+	else
+	{
+		_fps = 60.0f; //This will only occur in the first case when the frame calculation will divide by zero
+	}
+	
 }
