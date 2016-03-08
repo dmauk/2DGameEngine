@@ -5,6 +5,7 @@
 #include<SDL\SDL.h>
 #include<GL\glew.h>
 #include"GLSLProgram.h"
+#include"GLTexture.h"
 
 
 using namespace std;
@@ -31,5 +32,6 @@ private:
 	Sprite _sprite;
 	GLSLProgram _colorProgram;
 	float _time;
+	GLTexture _playerTexture;
 };
 

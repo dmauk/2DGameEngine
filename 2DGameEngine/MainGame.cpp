@@ -1,5 +1,6 @@
 #include "MainGame.h"
 #include "ErrorHandling.h"
+#include "ImageLoader.h"
 
 MainGame::MainGame() : _screenWidth(1024), _screenHeight(768), _gameState(GameState::PLAY), _time(0) //Initialization list
 {
@@ -13,7 +14,7 @@ MainGame::~MainGame()
 void MainGame::run()
 {
 	initSystems();
-
+	_playerTexture = ImageLoader::loadPNG("Textures/PNG/CharacterRight_Standing.png");
 	_sprite.init(-1.0f,-1.0f, 2.0f, 2.0f);
 
 	gameLoop();
@@ -48,6 +49,7 @@ void MainGame::initShaders()
 	_colorProgram.compileShaders("Shaders/colorShading.vert","Shaders/colorShading.frag");
 	_colorProgram.addAttribute("vertexPosition");
 	_colorProgram.addAttribute("vertexColor");
+	_colorProgram.addAttribute("vertexUV");
 	_colorProgram.linkShaders();
 }
 
@@ -81,10 +83,19 @@ void MainGame::drawGame() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	_colorProgram.use();
-	GLuint timeLocation = _colorProgram.getUniformLocation("time");
-	glUniform1f(timeLocation, _time);//Handler to timeLocation in shader
-	_sprite.draw();
+	//Texture
+	glActiveTexture(GL_TEXTURE0); //Avoid multi texturing and use only first one. Look up multitexturing
+	glBindTexture(GL_TEXTURE_2D, _playerTexture.id);
+	GLint textureLocation = _colorProgram.getUniformLocation("mySampler");
+	glUniform1i(textureLocation, 0); //User gl active texture 1;
 
+	//Uniform time
+	GLint timeLocation = _colorProgram.getUniformLocation("time"); //Will give error if time variable doesn't exist
+	glUniform1f(timeLocation, _time);//Handler to timeLocation in shader 
+
+	//Draw sprite
+	_sprite.draw();
+	glBindTexture(GL_TEXTURE_2D, 0);
 	_colorProgram.unuse();
 
 	//Swap our buffer.
