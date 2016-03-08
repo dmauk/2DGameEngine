@@ -1,6 +1,5 @@
 #include "MainGame.h"
 #include "ErrorHandling.h"
-#include "ImageLoader.h"
 
 MainGame::MainGame() : _screenWidth(1024), _screenHeight(768), _gameState(GameState::PLAY), _time(0) //Initialization list
 {
@@ -14,8 +13,12 @@ MainGame::~MainGame()
 void MainGame::run()
 {
 	initSystems();
-	_playerTexture = ImageLoader::loadPNG("Textures/PNG/CharacterRight_Standing.png");
-	_sprite.init(-1.0f,-1.0f, 2.0f, 2.0f);
+	//_playerTexture = ImageLoader::loadPNG("Textures/PNG/CharacterRight_Standing.png");
+	_sprites.push_back(Sprite());
+	_sprites.back().init(-1.0f, -1.0f, 2.0f, 2.0f, "Textures/PNG/CharacterRight_Standing.png");
+
+	_sprites.push_back(Sprite());
+	_sprites.back().init(0.0f, -1.0f, 2.0f, 2.0f, "Textures/PNG/CharacterRight_Standing.png");
 
 	gameLoop();
 }
@@ -69,7 +72,7 @@ void MainGame::processInput() {
 			_gameState = GameState::EXIT;
 			break;
 		case SDL_MOUSEMOTION:
-			cout << evnt.motion.x << " "<<evnt.motion.y<<endl;
+			//cout << evnt.motion.x << " "<<evnt.motion.y<<endl;
 			break;
 		}
 	}
@@ -85,7 +88,6 @@ void MainGame::drawGame() {
 	_colorProgram.use();
 	//Texture
 	glActiveTexture(GL_TEXTURE0); //Avoid multi texturing and use only first one. Look up multitexturing
-	glBindTexture(GL_TEXTURE_2D, _playerTexture.id);
 	GLint textureLocation = _colorProgram.getUniformLocation("mySampler");
 	glUniform1i(textureLocation, 0); //User gl active texture 1;
 
@@ -94,7 +96,10 @@ void MainGame::drawGame() {
 	glUniform1f(timeLocation, _time);//Handler to timeLocation in shader 
 
 	//Draw sprite
-	_sprite.draw();
+	for (int i = 0; i < _sprites.size(); i++)
+	{
+		_sprites[i].draw();
+	}
 	glBindTexture(GL_TEXTURE_2D, 0);
 	_colorProgram.unuse();
 

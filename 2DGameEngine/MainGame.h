@@ -6,7 +6,7 @@
 #include<GL\glew.h>
 #include"GLSLProgram.h"
 #include"GLTexture.h"
-
+#include <vector>
 
 using namespace std;
 
@@ -29,9 +29,9 @@ private:
 	int _screenWidth;
 	int _screenHeight;
 	GameState _gameState;
-	Sprite _sprite;
 	GLSLProgram _colorProgram;
 	float _time;
-	GLTexture _playerTexture;
+	vector<Sprite> _sprites;
+
 };
 

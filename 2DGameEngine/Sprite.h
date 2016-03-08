@@ -1,11 +1,17 @@
 #pragma once
 #include<GL\glew.h>
+#include"GLTexture.h"
+#include<string>
+
+
+using namespace std;
+
 class Sprite
 {
 public:
 	Sprite();
 	~Sprite();
-	void init(float x, float y, float width, float height);
+	void init(float x, float y, float width, float height,string textureFilePath);
 	void draw();
 
 private:
@@ -15,6 +21,6 @@ private:
 	float _width;
 	float _height;
 	GLuint _vboID;
-
+	GLTexture _texture; //look up ref loading for textures
 };
 

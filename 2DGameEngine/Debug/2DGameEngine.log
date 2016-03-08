@@ -1,4 +1,5 @@
 ﻿  MainGame.cpp
-c:\users\dan\documents\visual studio 2015\projects\2dgameengine\2dgameengine\maingame.cpp(59): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\dan\documents\visual studio 2015\projects\2dgameengine\2dgameengine\maingame.cpp(62): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\dan\documents\visual studio 2015\projects\2dgameengine\2dgameengine\maingame.cpp(99): warning C4018: '<': signed/unsigned mismatch
   2DGameEngine.vcxproj -> C:\Users\Dan\documents\visual studio 2015\Projects\2dGameEngine\Debug\2DGameEngine.exe
   2DGameEngine.vcxproj -> C:\Users\Dan\documents\visual studio 2015\Projects\2dGameEngine\Debug\2DGameEngine.pdb (Partial PDB)

@@ -2,6 +2,8 @@
 #include "Vertex.h"
 #include "ErrorHandling.h"
 #include <cstddef>
+#include "ResourceManager.h"
+
 
 Sprite::Sprite()
 {
@@ -16,7 +18,7 @@ Sprite::~Sprite()
 	}
 }
 
-void Sprite::init(float x, float y, float width, float height) {
+void Sprite::init(float x, float y, float width, float height, string textureFilePath) {
 	_x = x;
 	_y = y;
 	_width = width;
@@ -25,6 +27,8 @@ void Sprite::init(float x, float y, float width, float height) {
 	if (_vboID == 0) {
 		glGenBuffers(1, &_vboID);
 	}
+
+	_texture = ResourceManager::getTexture(textureFilePath);
 
 	Vertex vertexData[6];
 
@@ -74,6 +78,9 @@ void Sprite::init(float x, float y, float width, float height) {
 }
 
 void Sprite::draw() {
+
+	glBindTexture(GL_TEXTURE_2D, _texture.id); //Don't unbind this texture in the case another sprite will use this.
+
 	glBindBuffer(GL_ARRAY_BUFFER, _vboID);
 	glEnableVertexAttribArray(0);
 
