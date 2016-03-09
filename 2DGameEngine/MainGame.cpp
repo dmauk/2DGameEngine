@@ -1,8 +1,9 @@
 #include "MainGame.h"
-#include "ErrorHandling.h"
+#include <GameEngine2D/ErrorHandling.h>
 
 MainGame::MainGame() : _screenWidth(1024), _screenHeight(768), _gameState(GameState::PLAY), _time(0), _maxFPS(60.0f) //Initialization list
 {
+	_camera.init(_screenWidth, _screenHeight);
 }
 
 
@@ -14,11 +15,9 @@ void MainGame::run()
 {
 	initSystems();
 	//_playerTexture = ImageLoader::loadPNG("Textures/PNG/CharacterRight_Standing.png");
-	_sprites.push_back(Sprite());
-	_sprites.back().init(-1.0f, -1.0f, 2.0f, 2.0f, "Textures/PNG/CharacterRight_Standing.png");
+	_sprites.push_back(GameEngine2D::Sprite());
+	_sprites.back().init(0.0f, 0.0f, _screenWidth/2, _screenHeight/2, "Textures/PNG/CharacterRight_Standing.png");
 
-	_sprites.push_back(Sprite());
-	_sprites.back().init(0.0f, -1.0f, 2.0f, 2.0f, "Textures/PNG/CharacterRight_Standing.png");
 
 	gameLoop();
 }
@@ -26,25 +25,10 @@ void MainGame::run()
 void MainGame::initSystems()
 {
 	//initialize sdl
-	SDL_Init(SDL_INIT_EVERYTHING);
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); //Set state before creating window
+	GameEngine2D::init();
 
-	_window = SDL_CreateWindow("Game Engine v0.01", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _screenWidth, _screenHeight, SDL_WINDOW_OPENGL);
-	if (_window == nullptr) {
-		fatalError("SDL Window could not be created!");
-	}
-	SDL_GLContext glContext = SDL_GL_CreateContext(_window);
-	if (glContext == nullptr) {
-		fatalError("SDL_GL context could not be created!");
-	}
-	GLenum error = glewInit();
-	if (error != GLEW_OK) {
-		fatalError("Could not initialize glew");
-	};
-	//Display OPENGL VERSION FOR USER
-	cout << "OPENGL VERSION: " << glGetString(GL_VERSION) << endl; //GL_VERSION MACRO IS SET TO WHATEVER OPENGL VERSION YOU ARE RUNNING
-	glClearColor(0.0f,0.0f,1.0f,1.0f);
-	SDL_GL_SetSwapInterval(1); //Enable/Disables V-Sync
+	_window.create("Game Engine", _screenWidth, _screenHeight, 0);
+
 	initShaders();
 }
 
@@ -62,6 +46,7 @@ void MainGame::gameLoop() { //FPS is number of times going through this loop per
 
 		float startTicks = SDL_GetTicks();
 		processInput();
+		_camera.update();
 		_time += 0.015;
 		drawGame();
 		calculateFPS(); 
@@ -84,14 +69,40 @@ void MainGame::gameLoop() { //FPS is number of times going through this loop per
 
 void MainGame::processInput() {
 	SDL_Event evnt;
+	const float CAMERA_SPEED = 10.0f;
+	const float SCALE_SPEED = 0.95f;
 	while (SDL_PollEvent(&evnt)) {
 		switch (evnt.type) {
-		case SDL_QUIT:
-			_gameState = GameState::EXIT;
-			break;
-		case SDL_MOUSEMOTION:
-			//cout << evnt.motion.x << " "<<evnt.motion.y<<endl;
-			break;
+			case SDL_QUIT:
+				_gameState = GameState::EXIT;
+				break;
+			case SDL_MOUSEMOTION:
+				//cout << evnt.motion.x << " "<<evnt.motion.y<<endl;
+				break;
+			case SDL_KEYDOWN:
+				switch (evnt.key.keysym.sym) {
+					//Get the input and use it to move the camera
+					//THIS IS TEMPORARY
+				case SDLK_w:
+					_camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
+					break;
+				case SDLK_s:
+					_camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, -CAMERA_SPEED));
+					break;
+				case SDLK_a:
+					_camera.setPosition(_camera.getPosition() + glm::vec2(-CAMERA_SPEED, 0.0f));
+					break;
+				case SDLK_d:
+					_camera.setPosition(_camera.getPosition() + glm::vec2(CAMERA_SPEED, 0.0f));
+					break;
+				case SDLK_q:
+					_camera.setScale(_camera.getScale() * SCALE_SPEED);
+					break;
+				case SDLK_e:
+					_camera.setScale(_camera.getScale() / SCALE_SPEED);
+					break;
+				}
+				break;
 		}
 	}
 }
@@ -113,6 +124,12 @@ void MainGame::drawGame() {
 	GLint timeLocation = _colorProgram.getUniformLocation("time"); //Will give error if time variable doesn't exist
 	glUniform1f(timeLocation, _time);//Handler to timeLocation in shader 
 
+	//Set the cameraMatrix
+	GLint orthographicProjectionMatrixLocation = _colorProgram.getUniformLocation("orthographicProjectionMatrix");
+	glm::mat4 cameraMatrix = _camera.getCameraMatrix();
+
+	glUniformMatrix4fv(orthographicProjectionMatrixLocation, 1, GL_FALSE, &(cameraMatrix[0][0])); //Need address of first element of 2d array
+
 	//Draw sprite
 	for (int i = 0; i < _sprites.size(); i++)
 	{
@@ -122,8 +139,7 @@ void MainGame::drawGame() {
 	_colorProgram.unuse();
 
 	//Swap our buffer.
-	
-	SDL_GL_SwapWindow(_window);
+	_window.swapBuffer();
 }
 
 void MainGame::calculateFPS()

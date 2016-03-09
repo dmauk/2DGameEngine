@@ -8,8 +8,10 @@ out vec2 fragmentPosition; //Send after manipulation from main to fragShader
 out vec4 fragmentColor; //Send after manipulation from main to fragShader
 out vec2 fragmentUV;
 
+uniform mat4 orthographicProjectionMatrix;
+
 void main(){
-	gl_Position.xy = vertexPosition;
+	gl_Position.xy = (orthographicProjectionMatrix * vec4(vertexPosition,0.0, 1.0)).xy;
 	
 	gl_Position.z = 0.0;
 
@@ -22,3 +24,4 @@ void main(){
 	fragmentUV = vec2(vertexUV.x, 1.0 - vertexUV.y);
 
 }
+
