@@ -1,5 +1,6 @@
 #include "MainGame.h"
 #include <GameEngine2D/ErrorHandling.h>
+#include <GameEngine2D\ResourceManager.h>
 
 MainGame::MainGame() : _screenWidth(1024), _screenHeight(768), _gameState(GameState::PLAY), _time(0), _maxFPS(60.0f) //Initialization list
 {
@@ -15,8 +16,6 @@ void MainGame::run()
 {
 	initSystems();
 	//_playerTexture = ImageLoader::loadPNG("Textures/PNG/CharacterRight_Standing.png");
-	_sprites.push_back(GameEngine2D::Sprite());
-	_sprites.back().init(0.0f, 0.0f, _screenWidth/2, _screenHeight/2, "Textures/PNG/CharacterRight_Standing.png");
 
 
 	gameLoop();
@@ -30,6 +29,7 @@ void MainGame::initSystems()
 	_window.create("Game Engine", _screenWidth, _screenHeight, 0);
 
 	initShaders();
+	_spriteBatch.init();
 }
 
 void MainGame::initShaders()
@@ -130,11 +130,27 @@ void MainGame::drawGame() {
 
 	glUniformMatrix4fv(orthographicProjectionMatrixLocation, 1, GL_FALSE, &(cameraMatrix[0][0])); //Need address of first element of 2d array
 
-	//Draw sprite
-	for (int i = 0; i < _sprites.size(); i++)
-	{
-		_sprites[i].draw();
+	_spriteBatch.begin();
+
+	glm::vec4 pos(0.0f, 0.0f, 50.0f, 50.0f);
+	glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
+	static GameEngine2D::GLTexture texture = GameEngine2D::ResourceManager::getTexture("Textures/PNG/CharacterRight_Standing.png");
+	GameEngine2D::Color color;
+	color.r = 255;
+	color.g = 255;
+	color.b = 255;
+	color.a = 255;
+
+	for (int i = 0; i < 1000; i++) {
+		_spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
+		_spriteBatch.draw(pos + glm::vec4(50, 0, 0, 0), uv, texture.id, 0.0f, color);
 	}
+
+	_spriteBatch.end();
+
+	_spriteBatch.renderBatch();
+
+
 	glBindTexture(GL_TEXTURE_2D, 0);
 	_colorProgram.unuse();
 

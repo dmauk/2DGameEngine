@@ -10,6 +10,7 @@
 #include <vector>
 #include<GameEngine2D/GameEngine2D.h>
 #include<GameEngine2D/Camera2D.h>
+#include<GameEngine2D/SpriteBatch.h>
 
 using namespace std;
 
@@ -36,9 +37,9 @@ private:
 	GameEngine2D::Camera2D _camera;
 	GameEngine2D::GLSLProgram _colorProgram;
 	float _time;
-	vector<GameEngine2D::Sprite> _sprites;
 	float _fps;
 	float _frameTime;
 	float _maxFPS;
+	GameEngine2D::SpriteBatch _spriteBatch;
 };
 

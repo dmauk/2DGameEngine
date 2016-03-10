@@ -3,7 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 14 for Windows Desktop
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "2DGameEngine", "2DGameEngine\2DGameEngine.vcxproj", "{CB284D71-77D9-495E-8545-5E86D4CF2DB9}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MainGame", "2DGameEngine\2DGameEngine.vcxproj", "{CB284D71-77D9-495E-8545-5E86D4CF2DB9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ABC4FF2A-C643-46E7-B5C8-EC2D44F96BED} = {ABC4FF2A-C643-46E7-B5C8-EC2D44F96BED}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameEngine2D", "GameEngine2D\GameEngine2D.vcxproj", "{ABC4FF2A-C643-46E7-B5C8-EC2D44F96BED}"
 EndProject

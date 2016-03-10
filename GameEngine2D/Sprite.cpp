@@ -83,7 +83,8 @@ namespace GameEngine2D {
 
 		glBindBuffer(GL_ARRAY_BUFFER, _vboID);
 		glEnableVertexAttribArray(0);
-
+		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
 		//Point opengl to the data
 		//Position attribute pointer
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
@@ -94,6 +95,8 @@ namespace GameEngine2D {
 
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		glDisableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
 
 		//Unbind vbo
 		glBindBuffer(GL_ARRAY_BUFFER, 0);

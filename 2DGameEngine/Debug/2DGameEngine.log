@@ -1,11 +1,13 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (2DGameEngine.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   MainGame.cpp
-c:\users\dan\documents\visual studio 2015\projects\2dgameengine\2dgameengine\maingame.cpp(19): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 c:\users\dan\documents\visual studio 2015\projects\2dgameengine\2dgameengine\maingame.cpp(47): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
 c:\users\dan\documents\visual studio 2015\projects\2dgameengine\2dgameengine\maingame.cpp(50): warning C4305: '+=': truncation from 'double' to 'float'
 c:\users\dan\documents\visual studio 2015\projects\2dgameengine\2dgameengine\maingame.cpp(65): warning C4244: 'argument': conversion from 'float' to 'Uint32', possible loss of data
-c:\users\dan\documents\visual studio 2015\projects\2dgameengine\2dgameengine\maingame.cpp(134): warning C4018: '<': signed/unsigned mismatch
-c:\users\dan\documents\visual studio 2015\projects\2dgameengine\2dgameengine\maingame.cpp(150): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
-c:\users\dan\documents\visual studio 2015\projects\2dgameengine\2dgameengine\maingame.cpp(152): warning C4244: '=': conversion from 'Uint32' to 'float', possible loss of data
+c:\users\dan\documents\visual studio 2015\projects\2dgameengine\2dgameengine\maingame.cpp(166): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
+c:\users\dan\documents\visual studio 2015\projects\2dgameengine\2dgameengine\maingame.cpp(168): warning C4244: '=': conversion from 'Uint32' to 'float', possible loss of data
+  Generating Code...
+  Compiling...
+  main.cpp
+  Generating Code...
   2DGameEngine.vcxproj -> C:\Users\Dan\Documents\Visual Studio 2015\Projects\2DGameEngine\Debug\MainGame.exe
   2DGameEngine.vcxproj -> C:\Users\Dan\Documents\Visual Studio 2015\Projects\2DGameEngine\Debug\MainGame.pdb (Partial PDB)
