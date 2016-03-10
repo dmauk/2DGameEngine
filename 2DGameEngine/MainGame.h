@@ -11,6 +11,8 @@
 #include<GameEngine2D/GameEngine2D.h>
 #include<GameEngine2D/Camera2D.h>
 #include<GameEngine2D/SpriteBatch.h>
+#include<GameEngine2D\InputManager.h>
+#include<GameEngine2D\Timing.h>
 
 using namespace std;
 
@@ -28,7 +30,6 @@ private:
 	void initShaders();
 	void gameLoop();
 	void drawGame();
-	void calculateFPS();
 	void processInput();
 	GameEngine2D::Window _window;
 	int _screenWidth;
@@ -37,9 +38,10 @@ private:
 	GameEngine2D::Camera2D _camera;
 	GameEngine2D::GLSLProgram _colorProgram;
 	float _time;
-	float _fps;
-	float _frameTime;
 	float _maxFPS;
+	float _fps;
 	GameEngine2D::SpriteBatch _spriteBatch;
+	GameEngine2D::InputManager _inputManager;
+	GameEngine2D::FpsLimiter _fpsLimiter; 
 };
 

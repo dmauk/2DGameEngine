@@ -30,6 +30,7 @@ void MainGame::initSystems()
 
 	initShaders();
 	_spriteBatch.init();
+	_fpsLimiter.init(_maxFPS);
 }
 
 void MainGame::initShaders()
@@ -43,33 +44,27 @@ void MainGame::initShaders()
 
 void MainGame::gameLoop() { //FPS is number of times going through this loop per second essentially
 	while (_gameState != GameState::EXIT) {
-
-		float startTicks = SDL_GetTicks();
+		_fpsLimiter.begin(); //Begin frame
 		processInput();
 		_camera.update();
 		_time += 0.015;
 		drawGame();
-		calculateFPS(); 
+		_fps = _fpsLimiter.end();
+
+		//Print every 10 frames
 		static int count = 0;
 		if (count == 9)
 		{
-			cout << _fps << endl; //Will slow down frame rate //Print every 10
+			cout << _fps << endl; 
 			count = 0;
 		}
 		count++;
-
-		//Limit FPS //Already handled by vsync however
-		float frameTicks = SDL_GetTicks() - startTicks;
-		if (1000.0f / _maxFPS > frameTicks)
-		{													
-			SDL_Delay(1000.0f / _maxFPS - frameTicks); // 1s / 60 = every 0.0166 second we have a frame. So every 1000*0.0166 = 16.66ms we have one frame. 
-		}											   // if we have more frames in a shorter ms interval then we want to delay to the standard 60s interval. 
 	}
 }
 
 void MainGame::processInput() {
 	SDL_Event evnt;
-	const float CAMERA_SPEED = 10.0f;
+	const float CAMERA_SPEED = 2.0f;
 	const float SCALE_SPEED = 0.95f;
 	while (SDL_PollEvent(&evnt)) {
 		switch (evnt.type) {
@@ -80,31 +75,41 @@ void MainGame::processInput() {
 				//cout << evnt.motion.x << " "<<evnt.motion.y<<endl;
 				break;
 			case SDL_KEYDOWN:
-				switch (evnt.key.keysym.sym) {
-					//Get the input and use it to move the camera
-					//THIS IS TEMPORARY
-				case SDLK_w:
-					_camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
-					break;
-				case SDLK_s:
-					_camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, -CAMERA_SPEED));
-					break;
-				case SDLK_a:
-					_camera.setPosition(_camera.getPosition() + glm::vec2(-CAMERA_SPEED, 0.0f));
-					break;
-				case SDLK_d:
-					_camera.setPosition(_camera.getPosition() + glm::vec2(CAMERA_SPEED, 0.0f));
-					break;
-				case SDLK_q:
-					_camera.setScale(_camera.getScale() * SCALE_SPEED);
-					break;
-				case SDLK_e:
-					_camera.setScale(_camera.getScale() / SCALE_SPEED);
-					break;
-				}
+				_inputManager.pressKey(evnt.key.keysym.sym);
+				break;
+			case SDL_KEYUP:
+				_inputManager.releaseKey(evnt.key.keysym.sym);
 				break;
 		}
 	}
+
+	//Now we will move continuously rather than just on an event. NOT BOUND BY EVENTS
+
+	if (_inputManager.isKeyPressed(SDLK_w))
+	{
+		_camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, -CAMERA_SPEED));
+	}
+	if (_inputManager.isKeyPressed(SDLK_s))
+	{
+		_camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
+	}
+	if (_inputManager.isKeyPressed(SDLK_a))
+	{
+		_camera.setPosition(_camera.getPosition() + glm::vec2(CAMERA_SPEED, 0.0f));
+	}
+	if (_inputManager.isKeyPressed(SDLK_d))
+	{
+		_camera.setPosition(_camera.getPosition() + glm::vec2(-CAMERA_SPEED, 0.0f));
+	}
+	if (_inputManager.isKeyPressed(SDLK_q))
+	{
+		_camera.setScale(_camera.getScale() * SCALE_SPEED);
+	}
+	if (_inputManager.isKeyPressed(SDLK_e))
+	{
+		_camera.setScale(_camera.getScale() / SCALE_SPEED);
+	}
+
 }
 
 void MainGame::drawGame() {
@@ -135,17 +140,14 @@ void MainGame::drawGame() {
 	glm::vec4 pos(0.0f, 0.0f, 50.0f, 50.0f);
 	glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
 	static GameEngine2D::GLTexture texture = GameEngine2D::ResourceManager::getTexture("Textures/PNG/CharacterRight_Standing.png");
-	static GameEngine2D::GLTexture texture2 = GameEngine2D::ResourceManager::getTexture("Textures/PNG/CharacterLeft_Standing.png");
 	GameEngine2D::Color color;
 	color.r = 255;
 	color.g = 255;
 	color.b = 255;
 	color.a = 255;
 
-	for (int i = 0; i < 1000; i++) {
-		_spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
-		_spriteBatch.draw(pos + glm::vec4(50, 0, 0, 0), uv, texture2.id, 0.0f, color);
-	}
+	_spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
+	
 
 	_spriteBatch.end();
 
@@ -157,45 +159,4 @@ void MainGame::drawGame() {
 
 	//Swap our buffer.
 	_window.swapBuffer();
-}
-
-void MainGame::calculateFPS()
-{
-	static const int NUM_SAMPLES = 10; //Used to average last 10 frames for smooth frame rate measurment
-	static float frameTimes[NUM_SAMPLES];
-	static int currentBufferLocation;
-	static float prevTicks = SDL_GetTicks();
-	float currentTicks;
-	currentTicks = SDL_GetTicks(); 
-	_frameTime = currentTicks - prevTicks; //Will be incorrect on the first reading because it will be 0
-	frameTimes[currentBufferLocation%NUM_SAMPLES] = _frameTime; //Use modulus to do a circular buffer.
-
-	prevTicks = currentTicks;//Update previous ticks.
-	int count;
-	currentBufferLocation++; //Avoid divide by zero by iterating here
-	if (currentBufferLocation < NUM_SAMPLES)//In the first few moments, the averages will based off numbers 1- 10 rather than 10 for accuracy.
-	{
-		count = currentBufferLocation;
-	}
-	else
-	{
-		count = NUM_SAMPLES;//Eventually everything will be averaged by NUM_SAMPLES or 10
-	}
-	
-	float frameAverage = 0;
-	for(int i = 0; i < count; i++)
-	{
-		frameAverage += frameTimes[i];
-	}
-	frameAverage /= count;
-
-	if (frameAverage > 0)
-	{
-		_fps = 1000.0f / frameAverage; //frameAverage = FPMS -> How many frames is that a second? 1 second = 1000 ms so 1000 / FPMS = FPS
-	}
-	else
-	{
-		_fps = 60.0f; //This will only occur in the first case when the frame calculation will divide by zero
-	}
-	
 }

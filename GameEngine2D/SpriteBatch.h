@@ -17,7 +17,7 @@ namespace GameEngine2D {
 		Glyph(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint Texture, float Depth, const Color& color) : texture(Texture), depth(Depth) {
 
 			topLeft.color = color;
-			topLeft.setPosition(destRect.x, destRect.y + destRect.w); //One inefficiency, we are doing an intermediate copy as discussed in render batch.
+			topLeft.setPosition(destRect.x, destRect.y + destRect.w); //
 			topLeft.setUV(uvRect.x, uvRect.y + uvRect.w);
 
 			bottomLeft.color = color;

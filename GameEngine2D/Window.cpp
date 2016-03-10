@@ -45,11 +45,19 @@ namespace GameEngine2D {
 		if (error != GLEW_OK) {
 			fatalError("Could not initialize glew");
 		};
+
+
 		//Display OPENGL VERSION FOR USER
 		cout << "OPENGL VERSION: " << glGetString(GL_VERSION) << endl; //GL_VERSION MACRO IS SET TO WHATEVER OPENGL VERSION YOU ARE RUNNING
-		glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
-		SDL_GL_SetSwapInterval(1); //Enable/Disables V-Sync
+		glClearColor(0.0f,0.0f,1.0f,1.0f);
 
+
+		SDL_GL_SetSwapInterval(1); //Enable/Disables V-Sync
+		
+		//Enable blending based on alpha
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA); //take source alpha and multiply by color of texture at all points, take background color and be transparent to the src alpha minus one 
+														  //IE: in places where transparency is 0 on imager we get 1 for the background show-through, or whatever decimal it needs.
 		return 0;
 	}
 

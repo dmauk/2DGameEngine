@@ -22,7 +22,7 @@ void main(){
 
 	color = fragmentColor * vec4((cos(time)+1.0)*0.5,
 				  				 (cos(time)+1.0)*0.5,
-				  				 (sin(time)+1.0)*0.5, 0.0)*textureColor;
+				  				 (sin(time)+1.0)*0.5, 1.0)*textureColor;
 
 	
 	//color = textureColor * fragmentColor;

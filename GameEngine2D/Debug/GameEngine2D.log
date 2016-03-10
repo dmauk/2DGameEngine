@@ -1,5 +1,2 @@
-﻿  SpriteBatch.cpp
-c:\users\dan\documents\visual studio 2015\projects\2dgameengine\gameengine2d\spritebatch.cpp(38): warning C4018: '<': signed/unsigned mismatch
-c:\users\dan\documents\visual studio 2015\projects\2dgameengine\gameengine2d\spritebatch.cpp(63): warning C4018: '<': signed/unsigned mismatch
-c:\users\dan\documents\visual studio 2015\projects\2dgameengine\gameengine2d\spritebatch.cpp(93): warning C4018: '<': signed/unsigned mismatch
+﻿  Window.cpp
   GameEngine2D.vcxproj -> C:\Users\Dan\Documents\Visual Studio 2015\Projects\2DGameEngine\Debug\GameEngine2D.lib
