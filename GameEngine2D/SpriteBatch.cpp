@@ -88,13 +88,13 @@ namespace GameEngine2D {
 		vertices[currentVertex++] = _glyphPointers[0]->bottomRight;
 		vertices[currentVertex++] = _glyphPointers[0]->topRight;
 		vertices[currentVertex++] = _glyphPointers[0]->topLeft;
-		offset += 6;
+		offset += 6; //Used to keep track of which vertices to render in the batch. Ie. we use the same texture but all the vertices are different so we should be able to pickout the correct ones to render.
 
 		for (int currentGlyph = 1; currentGlyph < _glyphPointers.size(); currentGlyph++)
 		{
-			if (_glyphPointers[currentGlyph]->texture != _glyphPointers[currentGlyph]->texture)
+			if (_glyphPointers[currentGlyph]->texture != _glyphPointers[currentGlyph - 1]->texture)
 			{
-				_renderBatches.emplace_back(offset, 6, _glyphPointers[0]->texture);
+				_renderBatches.emplace_back(offset, 6, _glyphPointers[currentGlyph]->texture);
 				
 			}
 			else
@@ -112,7 +112,7 @@ namespace GameEngine2D {
 		}
 
 		glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-		//Orphan the buffer
+		//Orphan the buffer //Avoids having to overwrite data.
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), nullptr, GL_DYNAMIC_DRAW);
 		//Upload new data
 		glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(Vertex), vertices.data());

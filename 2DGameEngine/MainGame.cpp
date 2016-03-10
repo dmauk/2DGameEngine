@@ -135,6 +135,7 @@ void MainGame::drawGame() {
 	glm::vec4 pos(0.0f, 0.0f, 50.0f, 50.0f);
 	glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
 	static GameEngine2D::GLTexture texture = GameEngine2D::ResourceManager::getTexture("Textures/PNG/CharacterRight_Standing.png");
+	static GameEngine2D::GLTexture texture2 = GameEngine2D::ResourceManager::getTexture("Textures/PNG/CharacterLeft_Standing.png");
 	GameEngine2D::Color color;
 	color.r = 255;
 	color.g = 255;
@@ -143,7 +144,7 @@ void MainGame::drawGame() {
 
 	for (int i = 0; i < 1000; i++) {
 		_spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
-		_spriteBatch.draw(pos + glm::vec4(50, 0, 0, 0), uv, texture.id, 0.0f, color);
+		_spriteBatch.draw(pos + glm::vec4(50, 0, 0, 0), uv, texture2.id, 0.0f, color);
 	}
 
 	_spriteBatch.end();
