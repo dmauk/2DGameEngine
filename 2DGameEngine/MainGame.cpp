@@ -53,7 +53,7 @@ void MainGame::gameLoop() { //FPS is number of times going through this loop per
 
 		//Print every 10 frames
 		static int count = 0;
-		if (count == 9)
+		if (count == 999)
 		{
 			cout << _fps << endl; 
 			count = 0;
@@ -72,13 +72,19 @@ void MainGame::processInput() {
 				_gameState = GameState::EXIT;
 				break;
 			case SDL_MOUSEMOTION:
-				//cout << evnt.motion.x << " "<<evnt.motion.y<<endl;
+				_inputManager.setMouseCoords(evnt.motion.x, evnt.motion.y);
 				break;
 			case SDL_KEYDOWN:
 				_inputManager.pressKey(evnt.key.keysym.sym);
 				break;
 			case SDL_KEYUP:
 				_inputManager.releaseKey(evnt.key.keysym.sym);
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				_inputManager.pressKey(evnt.button.button);
+				break;
+			case SDL_MOUSEBUTTONUP:
+				_inputManager.releaseKey(evnt.button.button);
 				break;
 		}
 	}
@@ -108,6 +114,12 @@ void MainGame::processInput() {
 	if (_inputManager.isKeyPressed(SDLK_e))
 	{
 		_camera.setScale(_camera.getScale() / SCALE_SPEED);
+	}
+	if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT))
+	{
+		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
+		mouseCoords = _camera.convertScreenToWorldCoords(mouseCoords);
+		cout << mouseCoords.x << " " << mouseCoords.y << endl;
 	}
 
 }

@@ -30,5 +30,17 @@ namespace GameEngine2D {
 			_needMatrixUpdate = false;
 		}
 	}
+
+	glm::vec2 Camera2D::convertScreenToWorldCoords(glm::vec2 screenCoords)
+	{
+		//Make it so 0,0 is the center of the screen
+		screenCoords -= glm::vec2(_screenWidth / 2, _screenHeight / 2);
+		//Scale the coordinates
+		screenCoords /= _scale;
+		//Translate with the camera position
+		screenCoords += _position;
+
+		return screenCoords;
+	}
 	
 }

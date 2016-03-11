@@ -1,5 +1,7 @@
 #include "InputManager.h"
+#include <iostream>
 
+using namespace std;
 
 namespace GameEngine2D {
 
@@ -33,6 +35,17 @@ namespace GameEngine2D {
 		{
 			return false;
 		}
+	}
+
+	void InputManager::setMouseCoords(float x, float y)
+	{
+		_mouseCoords.x = x;
+		_mouseCoords.y = y;
+	}
+
+	glm::vec2 InputManager::getMouseCoords()
+	{
+		return _mouseCoords;
 	}
 
 }

@@ -21,6 +21,9 @@ namespace GameEngine2D {
 		glm::vec2 getPosition() { return _position; }
 		float getScale() { return _scale; }
 		glm::mat4 getCameraMatrix() { return _cameraMatrix; }
+
+		glm::vec2 convertScreenToWorldCoords(glm::vec2 screenCoords);
+
 	private:
 		int _screenWidth;
 		int _screenHeight;
