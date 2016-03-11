@@ -13,6 +13,7 @@
 #include<GameEngine2D/SpriteBatch.h>
 #include<GameEngine2D\InputManager.h>
 #include<GameEngine2D\Timing.h>
+#include "Projectile.h"
 
 using namespace std;
 
@@ -43,5 +44,6 @@ private:
 	GameEngine2D::SpriteBatch _spriteBatch;
 	GameEngine2D::InputManager _inputManager;
 	GameEngine2D::FpsLimiter _fpsLimiter; 
+	vector<Projectile> _projectiles;
 };
 

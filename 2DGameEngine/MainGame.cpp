@@ -47,6 +47,20 @@ void MainGame::gameLoop() { //FPS is number of times going through this loop per
 		_fpsLimiter.begin(); //Begin frame
 		processInput();
 		_camera.update();
+
+		for (int i = 0; i < _projectiles.size();) //moved i++ down
+		{
+			_projectiles[i].update();
+			if (_projectiles[i].update() == true)
+			{
+				_projectiles[i] = _projectiles.back(); //Remove element when order doesn't matter
+				_projectiles.pop_back();
+			}
+			else
+			{
+				i++;
+			}
+		}
 		_time += 0.015;
 		drawGame();
 		_fps = _fpsLimiter.end();
@@ -119,7 +133,10 @@ void MainGame::processInput() {
 	{
 		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
 		mouseCoords = _camera.convertScreenToWorldCoords(mouseCoords);
-		cout << mouseCoords.x << " " << mouseCoords.y << endl;
+		glm::vec2 playerPosition(0.0f);
+		glm::vec2 direction = mouseCoords - playerPosition;
+		direction = glm::normalize(direction);
+		_projectiles.emplace_back(playerPosition, direction, 1.0f, 100);
 	}
 
 }
@@ -130,7 +147,7 @@ void MainGame::drawGame() {
 
 	//Clear the color and depth buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+
 	_colorProgram.use();
 	//Texture
 	glActiveTexture(GL_TEXTURE0); //Avoid multi texturing and use only first one. Look up multitexturing
@@ -159,7 +176,12 @@ void MainGame::drawGame() {
 	color.a = 255;
 
 	_spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
-	
+
+	for (int i = 0; i < _projectiles.size(); i++)
+	{
+		_projectiles[i].draw(_spriteBatch);
+
+	}
 
 	_spriteBatch.end();
 
