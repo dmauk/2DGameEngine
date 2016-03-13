@@ -2,6 +2,7 @@
 #include <GameEngine2D/ResourceManager.h> //Change from static class
 #include <GameEngine2D\GLTexture.h>
 #include "Level.h"
+#include <iostream>
 #include <algorithm>
 
 
@@ -14,7 +15,7 @@ Agent::~Agent()
 {
 }
 
-void Agent::collideWithLevel(const vector<string>& levelData)
+bool Agent::collideWithLevel(const vector<string>& levelData)
 {
 	vector<glm::vec2> collideTilePositions;
 
@@ -33,6 +34,11 @@ void Agent::collideWithLevel(const vector<string>& levelData)
 		collideWithTile(collideTilePositions[i]);
 	}
 
+	if (collideTilePositions.size() > 0)
+	{
+		return true;
+	}
+	return false;
 }
 
 void Agent::checkTilePosition(const vector<string>& levelData, vector<glm::vec2>& collideTilePositions, float x, float y)
@@ -56,7 +62,6 @@ void Agent::checkTilePosition(const vector<string>& levelData, vector<glm::vec2>
 //AABB collision
 void Agent::collideWithTile(glm::vec2 tilePosition)
 {
-	const float AGENT_RADIUS = (float)AGENT_WIDTH / 2.0f;
 	const float TILE_RADIUS = (float)TILE_WIDTH / 2.0f;
 	const float MIN_DISTANCE = AGENT_RADIUS + TILE_RADIUS;
 	glm::vec2 centerPlayerPosition = _position + glm::vec2(AGENT_RADIUS);
@@ -99,4 +104,23 @@ void Agent::draw(GameEngine2D::SpriteBatch& spriteBatch)
 	const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 	static GameEngine2D::GLTexture texture = GameEngine2D::ResourceManager::getTexture("Textures/circle.png");
 	spriteBatch.draw(destRect, uvRect, texture.id, 0.0f, _color);
+}
+
+bool Agent::collidewWithAgent(Agent* agent)
+{
+	//Check with circular collision
+	const float MIN_DISTANCE = AGENT_RADIUS * 2;
+	glm::vec2 centerPosA = _position + glm::vec2(AGENT_RADIUS);
+	glm::vec2 centerPosB = agent->getPosition() + glm::vec2(AGENT_RADIUS);
+	glm::vec2 distVec = centerPosA - centerPosB; 
+	float distance = glm::length(distVec);
+	float collisionDepth = MIN_DISTANCE - distance;
+	if (collisionDepth > 0)
+	{
+		glm::vec2 collisionDepthVec = glm::normalize(distVec) * collisionDepth;
+		_position += collisionDepthVec / 2.0f;
+		agent->_position -= collisionDepthVec / 2.0f;
+		return true;
+	}
+	return false;
 }

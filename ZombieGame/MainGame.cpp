@@ -1,8 +1,12 @@
 #include "MainGame.h"
 #include <GameEngine2D\GameEngine2D.h>
+#include <GameEngine2D\ErrorHandling.h>
 #include "Zombie.h"
 #include <random>
 #include <ctime>
+
+const float HUMAN_SPEED = 1.0f;
+const float ZOMBIE_SPEED = 1.3f;
 
 MainGame::MainGame() : _screenWidth(1024), _screenHeight(768), _gameState(GameState::PLAY), _fps(0.0f), _player(nullptr)
 {
@@ -42,20 +46,29 @@ void MainGame::initLevel() //Change to take a string of the filePath for the lev
 	_levels.push_back(new Level("Levels/level1.txt"));
 	_currentLevel = 0;
 	_player = new Player();
-	_player->init(4.0f, _levels[_currentLevel]->getStartPlayerPos(), &_inputManager);
+	_player->init(10.0f, _levels[_currentLevel]->getStartPlayerPos(), &_inputManager);
 	_humans.push_back(_player);
 
 	mt19937 randomEngine(time(nullptr));
 	uniform_int_distribution<int> randX(2, _levels[_currentLevel]->getWidth()-2);
 	uniform_int_distribution<int> randY(2, _levels[_currentLevel]->getHeight()-2);
 
-	const float HUMAN_SPEED = 1.0f;
 
+
+	//Add humans
 	for (int i = 0; i < _levels[_currentLevel]->getNumHumans(); i++)
 	{
 		_humans.push_back(new Human);
 		glm::vec2 pos(randX(randomEngine)* TILE_WIDTH, randY(randomEngine)*TILE_WIDTH);
 		_humans.back()->init(HUMAN_SPEED, pos);
+	}
+
+	//Add the zombies
+	const vector<glm::vec2>& zombiePositions = _levels[_currentLevel]->getStartZombiePoistions();
+	for (int i = 0; i < zombiePositions.size(); i++)
+	{
+		_zombies.push_back(new Zombie);
+		_zombies.back()->init(ZOMBIE_SPEED, zombiePositions[i]);
 	}
 
 }
@@ -118,6 +131,11 @@ void MainGame::drawGame()
 	{
 		_humans[i]->draw(_agentSpriteBatch);
 	}
+
+	for (int i = 0; i < _zombies.size(); i++)
+	{
+		_zombies[i]->draw(_agentSpriteBatch);
+	}
 	_agentSpriteBatch.end();
 	_agentSpriteBatch.renderBatch();
 
@@ -158,8 +176,50 @@ void MainGame::processInput()
 
 void MainGame::updateAgents()
 {
+	//Update humans
 	for (int i = 0; i < _humans.size(); i++)
 	{
 		_humans[i]->update(_levels[_currentLevel]->getLevelData(),_humans,_zombies);
+	}
+	
+	//Update all zombies
+	for (int i = 0; i < _zombies.size(); i++)
+	{
+		_zombies[i]->update(_levels[_currentLevel]->getLevelData(), _humans, _zombies);
+	}
+
+	for (int i = 0; i < _zombies.size(); i++)
+	{
+		for (int j = i + 1; j < _zombies.size(); j++)
+		{
+			_zombies[i]->collidewWithAgent(_zombies[j]);
+		}
+		for (int j = 1; j < _humans.size(); j++)
+		{
+			if (_zombies[i]->collidewWithAgent(_humans[j]))
+			{
+				//Add the zombie
+				_zombies.push_back(new Zombie);
+				_zombies.back()->init(ZOMBIE_SPEED, _humans[j]->getPosition());
+				//Delete the human
+				delete _humans[j];
+				_humans[j] = _humans.back();
+				_humans.pop_back();
+			}
+		}
+		//Collide with player
+		if (_zombies[i]->collidewWithAgent(_player))
+		{
+			GameEngine2D::fatalError("YOU LOSE!");
+		}
+	}
+
+	//Update Human collisions
+	for (int i = 0; i < _humans.size(); i++) 
+	{
+		for (int j = i + 1; j < _humans.size(); j++)
+		{
+			_humans[i]->collidewWithAgent(_humans[j]);
+		}
 	}
 }

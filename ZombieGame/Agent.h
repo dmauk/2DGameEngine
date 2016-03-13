@@ -3,9 +3,12 @@
 #include<GameEngine2D\SpriteBatch.h>
 
 const float AGENT_WIDTH = 60;
+const float AGENT_RADIUS = AGENT_WIDTH / 2.0f;
+
 
 class Zombie;
 class Human;
+
 
 
 class Agent
@@ -13,8 +16,9 @@ class Agent
 public:
 	Agent();
 	virtual ~Agent();
-	virtual void update(const vector<string>& levelData, vector<Human*>& _humans, vector<Zombie*>& _zombies) = 0;
-	void collideWithLevel(const vector<string>& levelData);
+	virtual void update(const vector<string>& levelData, vector<Human*>& humans, vector<Zombie*>& zombies) = 0;
+	bool collideWithLevel(const vector<string>& levelData);
+	bool collidewWithAgent(Agent* agent); //maybe store a vector of agents instead?
 	void draw(GameEngine2D::SpriteBatch& _spriteBatch);
 	glm::vec2 getPosition() const { return _position; }
 protected:

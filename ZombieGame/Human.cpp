@@ -1,6 +1,10 @@
 #include "Human.h"
 #include <random>
 #include <ctime>
+#include <iostream>
+#define _USE_MATH_DEFINES
+#include <math.h>
+#include <GLM/gtx/rotate_vector.hpp>
 
 
 Human::Human()
@@ -30,12 +34,19 @@ void Human::init(float speed, glm::vec2 position)
 	_color.a = 255;
 }
 
-void Human::update(const vector<string>& levelData, vector<Human*>& _humans, vector<Zombie*>& _zombies)
+void Human::update(const vector<string>& levelData, vector<Human*>& humans, vector<Zombie*>& zombies)
 {
-	
+	static mt19937 randomEngine;
+	static uniform_real_distribution<float> randRotate(-5.0f, 5.0f);
+	const float DEG_TO_RAD = M_PI / 180.0f;
 
 	_position += _direction * _speed;
+	_direction = glm::rotate(_direction, randRotate(randomEngine) * DEG_TO_RAD);
 
-	collideWithLevel(levelData);
+	if (collideWithLevel(levelData))
+	{
+		_direction = glm::rotate(_direction, 90.0f * DEG_TO_RAD);
+	
+	}
 }
 

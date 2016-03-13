@@ -22,7 +22,7 @@ void Player::init(float speed, glm::vec2 position, GameEngine2D::InputManager* i
 	_color.a = 255;
 }
 
-void Player::update(const vector<string>& levelData, vector<Human*>& _humans, vector<Zombie*>& _zombies)
+void Player::update(const vector<string>& levelData, vector<Human*>& humans, vector<Zombie*>& zombies)
 {
 	if (_inputManager->isKeyPressed(SDLK_w)) {
 		_position.y += _speed;
