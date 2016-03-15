@@ -23,7 +23,7 @@ namespace GameEngine2D {
 
 
 
-	void SpriteBatch::begin(GlyphSortType sortType /*= GlyphSortType::TEXTURE*/)
+	void SpriteBatch::begin(GlyphSortType sortType /*= GlyphSortType::TEXTURE*/) 
 	{
 		_sortType = sortType;
 		_renderBatches.clear(); //Get rid of old batches when a new one is to begin

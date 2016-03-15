@@ -8,6 +8,7 @@
 #include <GameEngine2D\SpriteBatch.h>
 #include "Level.h"
 #include "Player.h" //Will also include human and agent
+#include "Bullet.h"
 
 using namespace std;
 
@@ -37,6 +38,7 @@ private:
 	void drawGame();
 	void processInput();
 	void updateAgents(); //Updates all agents
+	void updateBullets();
 	GameState _gameState;
 	GameEngine2D::GLSLProgram _textureProgram;
 	GameEngine2D::Window _window;
@@ -52,4 +54,5 @@ private:
 	Player* _player;
 	vector<Human*> _humans;
 	vector<Zombie*> _zombies;
+	vector<Bullet> _bullets;
 };

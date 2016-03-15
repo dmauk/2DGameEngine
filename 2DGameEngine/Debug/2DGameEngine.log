@@ -1,3 +1,3 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (2DGameEngine.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  2DGameEngine.vcxproj -> C:\Users\Dan\Documents\Visual Studio 2015\Projects\2DGameEngine\Debug\MainGame.exe
-  2DGameEngine.vcxproj -> C:\Users\Dan\Documents\Visual Studio 2015\Projects\2DGameEngine\Debug\MainGame.pdb (Partial PDB)
+  2DGameEngine.vcxproj -> C:\Users\swfan\Documents\Visual Studio 2015\Projects\2DGameEngine\Debug\MainGame.exe
+  2DGameEngine.vcxproj -> C:\Users\swfan\Documents\Visual Studio 2015\Projects\2DGameEngine\Debug\MainGame.pdb (Partial PDB)

@@ -4,6 +4,10 @@
 #include "Zombie.h"
 #include <random>
 #include <ctime>
+#include <iostream>
+#include "Gun.h"
+
+using namespace std;
 
 const float HUMAN_SPEED = 1.0f;
 const float ZOMBIE_SPEED = 1.3f;
@@ -46,7 +50,7 @@ void MainGame::initLevel() //Change to take a string of the filePath for the lev
 	_levels.push_back(new Level("Levels/level1.txt"));
 	_currentLevel = 0;
 	_player = new Player();
-	_player->init(10.0f, _levels[_currentLevel]->getStartPlayerPos(), &_inputManager);
+	_player->init(10.0f, _levels[_currentLevel]->getStartPlayerPos(), &_inputManager, &_camera, &_bullets);
 	_humans.push_back(_player);
 
 	mt19937 randomEngine(time(nullptr));
@@ -71,6 +75,10 @@ void MainGame::initLevel() //Change to take a string of the filePath for the lev
 		_zombies.back()->init(ZOMBIE_SPEED, zombiePositions[i]);
 	}
 
+	//Set up player's guns
+	_player->addGun(new Gun("Shotgun", 60, 6, 20.0f, 5.0f, 10.0f));
+	_player->addGun(new Gun("Rifle", 10, 1, 20.0f, 5.0f, 2.0f));
+	_player->addGun(new Gun("Pistol", 60, 1, 20.0f, 1.0f, 1.0f));
 }
 
 
@@ -94,6 +102,7 @@ void MainGame::gameLoop()
 		_fpsLimiter.begin();
 		processInput();
 		updateAgents();
+		updateBullets();
 		_camera.setPosition(_player->getPosition());
 		_camera.update();
 		drawGame();
@@ -136,6 +145,12 @@ void MainGame::drawGame()
 	{
 		_zombies[i]->draw(_agentSpriteBatch);
 	}
+
+	for (int i = 0; i < _bullets.size(); i++)
+	{
+		_bullets[i].draw(_agentSpriteBatch);
+	}
+
 	_agentSpriteBatch.end();
 	_agentSpriteBatch.renderBatch();
 
@@ -221,5 +236,13 @@ void MainGame::updateAgents()
 		{
 			_humans[i]->collidewWithAgent(_humans[j]);
 		}
+	}
+}
+
+void MainGame::updateBullets()
+{
+	for (int i = 0; i < _bullets.size(); i++)
+	{
+		_bullets[i].update(_humans, _zombies);
 	}
 }
