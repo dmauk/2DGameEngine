@@ -24,6 +24,16 @@ MainGame::~MainGame()
 	{
 		delete _levels[i];
 	}
+
+	for (int i = 0; i < _zombies.size(); i++)
+	{
+		delete _zombies[i];
+	}
+
+	for (int i = 0; i < _humans.size(); i++)
+	{
+		delete _humans[i];
+	}
 }
 
 
@@ -47,10 +57,15 @@ void MainGame::initSystems()
 
 void MainGame::initLevel() //Change to take a string of the filePath for the level;
 {
+
+	const int PLAYER_HEALTH = 100;
+	const int HUMAN_HEALTH = 100;
+	const int ZOMBIE_HEALTH = 60;
+
 	_levels.push_back(new Level("Levels/level1.txt"));
 	_currentLevel = 0;
 	_player = new Player();
-	_player->init(10.0f, _levels[_currentLevel]->getStartPlayerPos(), &_inputManager, &_camera, &_bullets);
+	_player->init(PLAYER_HEALTH,10.0f, _levels[_currentLevel]->getStartPlayerPos(), &_inputManager, &_camera, &_bullets);
 	_humans.push_back(_player);
 
 	mt19937 randomEngine(time(nullptr));
@@ -64,7 +79,7 @@ void MainGame::initLevel() //Change to take a string of the filePath for the lev
 	{
 		_humans.push_back(new Human);
 		glm::vec2 pos(randX(randomEngine)* TILE_WIDTH, randY(randomEngine)*TILE_WIDTH);
-		_humans.back()->init(HUMAN_SPEED, pos);
+		_humans.back()->init(HUMAN_HEALTH,HUMAN_SPEED, pos);
 	}
 
 	//Add the zombies
@@ -72,13 +87,13 @@ void MainGame::initLevel() //Change to take a string of the filePath for the lev
 	for (int i = 0; i < zombiePositions.size(); i++)
 	{
 		_zombies.push_back(new Zombie);
-		_zombies.back()->init(ZOMBIE_SPEED, zombiePositions[i]);
+		_zombies.back()->init(ZOMBIE_HEALTH,ZOMBIE_SPEED, zombiePositions[i]);
 	}
 
 	//Set up player's guns
-	_player->addGun(new Gun("Shotgun", 60, 6, 20.0f, 5.0f, 10.0f));
-	_player->addGun(new Gun("Rifle", 10, 1, 20.0f, 5.0f, 2.0f));
-	_player->addGun(new Gun("Pistol", 60, 1, 20.0f, 1.0f, 1.0f));
+	_player->addGun(new Gun("Shotgun", 30, 6, 20.0f, 5.0f, 10.0f, 360.0f));
+	_player->addGun(new Gun("Rifle", 1, 3, 20.0f, 5.0f, 4.0f, 360.0f));
+	_player->addGun(new Gun("Pistol", 20, 1, 20.0f, 1.0f, 1.0f, 360.0f));
 }
 
 
@@ -101,11 +116,17 @@ void MainGame::gameLoop()
 	{
 		_fpsLimiter.begin();
 		processInput();
-		updateAgents();
-		updateBullets();
-		_camera.setPosition(_player->getPosition());
-		_camera.update();
-		drawGame();
+		if (_gameState != GameState::PAUSE)
+		{
+			
+			
+			updateAgents();
+			updateBullets();
+			_camera.setPosition(_player->getPosition());
+			_camera.update();
+			drawGame();
+			
+		}
 		_fps = _fpsLimiter.end();
 	}
 }
@@ -187,10 +208,18 @@ void MainGame::processInput()
 				break;
 		}
 	}
+
+	if (_inputManager.isKeyPressed(SDLK_p))
+	{
+		_gameState = GameState::PAUSE;
+	}
+	else
+		_gameState = GameState::PLAY;
 }
 
 void MainGame::updateAgents()
 {
+	const int ZOMBIE_HEALTH = 60;
 	//Update humans
 	for (int i = 0; i < _humans.size(); i++)
 	{
@@ -215,7 +244,7 @@ void MainGame::updateAgents()
 			{
 				//Add the zombie
 				_zombies.push_back(new Zombie);
-				_zombies.back()->init(ZOMBIE_SPEED, _humans[j]->getPosition());
+				_zombies.back()->init(ZOMBIE_HEALTH,ZOMBIE_SPEED, _humans[j]->getPosition());
 				//Delete the human
 				delete _humans[j];
 				_humans[j] = _humans.back();
@@ -241,8 +270,72 @@ void MainGame::updateAgents()
 
 void MainGame::updateBullets()
 {
+	for (int i = 0; i < _bullets.size();)
+	{
+		if (_bullets[i].update(_humans, _zombies, _levels[_currentLevel]->getLevelData()))
+		{
+			_bullets[i] = _bullets.back();
+			_bullets.pop_back();
+		}
+		else i++;
+
+	}
+
+	bool bulletDeleted = false;
+
 	for (int i = 0; i < _bullets.size(); i++)
 	{
-		_bullets[i].update(_humans, _zombies);
+		for (int j = 0; j < _zombies.size();)
+		{
+			if (_bullets[i].collidewWithAgent(_zombies[j]))
+			{
+				if (_zombies[j]->applyDamage(_bullets[i].getDamage()))
+				{
+					delete _zombies[j];
+					_zombies[j] = _zombies.back();
+					_zombies.pop_back();
+				}
+
+				_bullets[i] = _bullets.back();
+				_bullets.pop_back();
+				i--;//Don't skip bullet
+				//Don't need to check for an already deleted bullet
+				bulletDeleted = true;
+				break;
+				
+			}
+			else
+			{
+				j++;
+			}
+		}
+		if(bulletDeleted == false)
+		{
+			for (int j = 1; j < _humans.size();)
+			{
+				if (_bullets[i].collidewWithAgent(_humans[j]))
+				{
+					if (_humans[j]->applyDamage(_bullets[i].getDamage()))
+					{
+						delete _humans[j];
+						_humans[j] = _humans.back();
+						_humans.pop_back();
+					}
+
+					_bullets[i] = _bullets.back();
+					_bullets.pop_back();
+					i--;
+					break;
+				}
+				else
+				{
+					j++;
+				}
+
+			}
+		}
+		
+		bulletDeleted = false;
+		
 	}
 }

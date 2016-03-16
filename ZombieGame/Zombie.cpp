@@ -24,7 +24,7 @@ void Zombie::update(const vector<string>& levelData, vector<Human*>& humans, vec
 	collideWithLevel(levelData);
 }
 
-void Zombie::init(float speed, glm::vec2 position)
+void Zombie::init(float health, float speed, glm::vec2 position)
 {
 	_speed = speed;
 	_position = position;
@@ -32,6 +32,7 @@ void Zombie::init(float speed, glm::vec2 position)
 	_color.g = 160;
 	_color.b = 0;
 	_color.a = 255;
+	_health = health;
 }
 
 Human* Zombie::getNearestHuman(vector<Human*>& humans)

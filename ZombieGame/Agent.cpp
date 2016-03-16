@@ -124,3 +124,14 @@ bool Agent::collidewWithAgent(Agent* agent)
 	}
 	return false;
 }
+
+bool Agent::applyDamage(int damage)
+{
+	_health -= damage;
+	if (_health <= 0)
+	{
+		return true;
+	}
+
+	return false;
+}

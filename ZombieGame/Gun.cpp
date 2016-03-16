@@ -9,7 +9,7 @@
 
 using namespace std;
 
-Gun::Gun(string name, int fireRate, int bulletsPerShot, float bulletSpeed, float bulletDamage, float bulletSpread) : _name(name), _fireRate(fireRate), _bulletsPerShot(bulletsPerShot), _bulletDamage(bulletDamage), _bulletSpeed(bulletSpeed) , _frameCounter(0), _spread(bulletSpread)
+Gun::Gun(string name, int fireRate, int bulletsPerShot, float bulletSpeed, float bulletDamage, float bulletSpread, float bulletDuration) : _name(name), _fireRate(fireRate), _bulletsPerShot(bulletsPerShot), _bulletDamage(bulletDamage), _bulletSpeed(bulletSpeed) , _frameCounter(0), _spread(bulletSpread), _bulletDuration(bulletDuration)
 {
 }
 
@@ -29,14 +29,12 @@ void Gun::fire(const glm::vec2& direction, vector<Bullet>& bullets, const glm::v
 	for (int i = 0; i < _bulletsPerShot; i++)
 	{
 
-		bullets.emplace_back(position, glm::rotate(direction, randRotate(randomEngine) * DEG_TO_RAD), _bulletDamage, _bulletSpeed);
+		bullets.emplace_back(position, glm::rotate(direction, randRotate(randomEngine)*DEG_TO_RAD), _bulletDamage, _bulletSpeed, _bulletDuration);
 	}
 }
 
 void Gun::update(bool isMouseDown, const glm::vec2& direction, vector<Bullet>& bullets, const glm::vec2& position)
 {
-	cout << "UPDATE" << endl;
-
 	_frameCounter++;
 	if (_fireRate <= _frameCounter && isMouseDown)
 	{

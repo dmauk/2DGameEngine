@@ -14,7 +14,7 @@ Player::~Player()
 {
 }
 
-void Player::init(float speed, glm::vec2 position, GameEngine2D::InputManager* inputManager, GameEngine2D::Camera2D * camera, vector<Bullet>* bullets) //Dependency injection
+void Player::init(float health, float speed, glm::vec2 position, GameEngine2D::InputManager* inputManager, GameEngine2D::Camera2D * camera, vector<Bullet>* bullets) //Dependency injection
 {
 	_speed = speed;
 	_position = position;
@@ -25,6 +25,7 @@ void Player::init(float speed, glm::vec2 position, GameEngine2D::InputManager* i
 	_color.a = 255;
 	_camera = camera;
 	_bullets = bullets;
+	_health = health;
 }
 
 void Player::update(const vector<string>& levelData, vector<Human*>& humans, vector<Zombie*>& zombies)

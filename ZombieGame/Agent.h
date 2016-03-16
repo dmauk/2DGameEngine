@@ -20,12 +20,14 @@ public:
 	bool collideWithLevel(const vector<string>& levelData);
 	bool collidewWithAgent(Agent* agent); //maybe store a vector of agents instead?
 	void draw(GameEngine2D::SpriteBatch& _spriteBatch);
+	bool applyDamage(int damage);
 	glm::vec2 getPosition() const { return _position; }
 protected:
 	void checkTilePosition(const vector<string>& levelData, vector<glm::vec2>& collideTilePositions, float x, float y);
 	void collideWithTile(glm::vec2 tilePosition);
 	glm::vec2 _position;
 	float _speed;
+	float _health;
 	glm::vec2 _direction;
 	GameEngine2D::Color _color;
 	//GLTexture _texture; ///> Not used because agent will use the same texture so there's no point in making copies. 

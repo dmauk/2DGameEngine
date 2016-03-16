@@ -16,7 +16,7 @@ Human::~Human()
 {
 }
 
-void Human::init(float speed, glm::vec2 position)
+void Human::init(float health, float speed, glm::vec2 position)
 {
 	static mt19937 randomEngine;
 	static uniform_real_distribution<float> randDir(-1.0f, 1.0f);
@@ -32,6 +32,7 @@ void Human::init(float speed, glm::vec2 position)
 	_color.g = 0;
 	_color.b = 200;
 	_color.a = 255;
+	_health = health;
 }
 
 void Human::update(const vector<string>& levelData, vector<Human*>& humans, vector<Zombie*>& zombies)

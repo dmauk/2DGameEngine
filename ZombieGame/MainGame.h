@@ -14,7 +14,7 @@ using namespace std;
 
 class Zombie;
 
-enum class GameState { PLAY, EXIT };
+enum class GameState { PLAY, EXIT, PAUSE };
 
 class MainGame {
 public:
