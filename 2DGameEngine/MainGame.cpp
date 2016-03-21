@@ -2,9 +2,9 @@
 #include <GameEngine2D/ErrorHandling.h>
 #include <GameEngine2D\ResourceManager.h>
 
-MainGame::MainGame() : _screenWidth(1024), _screenHeight(768), _gameState(GameState::PLAY), _time(0), _maxFPS(60.0f) //Initialization list
+MainGame::MainGame() : m_screenWidth(1024), m_screenHeight(768), m_gameState(GameState::PLAY), m_time(0), m_maxFPS(60.0f) //Initialization list
 {
-	_camera.init(_screenWidth, _screenHeight);
+	m_camera.init(m_screenWidth, m_screenHeight);
 }
 
 
@@ -26,50 +26,50 @@ void MainGame::initSystems()
 	//initialize sdl
 	GameEngine2D::init();
 
-	_window.create("Game Engine", _screenWidth, _screenHeight, 0);
+	m_window.create("Game Engine", m_screenWidth, m_screenHeight, 0);
 
 	initShaders();
-	_spriteBatch.init();
-	_fpsLimiter.init(_maxFPS);
+	m_spriteBatch.init();
+	m_fpsLimiter.init(m_maxFPS);
 }
 
 void MainGame::initShaders()
 {
-	_colorProgram.compileShaders("Shaders/colorShading.vert","Shaders/colorShading.frag");
-	_colorProgram.addAttribute("vertexPosition");
-	_colorProgram.addAttribute("vertexColor");
-	_colorProgram.addAttribute("vertexUV");
-	_colorProgram.linkShaders();
+	m_colorProgram.compileShaders("Shaders/colorShading.vert","Shaders/colorShading.frag");
+	m_colorProgram.addAttribute("vertexPosition");
+	m_colorProgram.addAttribute("vertexColor");
+	m_colorProgram.addAttribute("vertexUV");
+	m_colorProgram.linkShaders();
 }
 
 void MainGame::gameLoop() { //FPS is number of times going through this loop per second essentially
-	while (_gameState != GameState::EXIT) {
-		_fpsLimiter.begin(); //Begin frame
+	while (m_gameState != GameState::EXIT) {
+		m_fpsLimiter.begin(); //Begin frame
 		processInput();
-		_camera.update();
+		m_camera.update();
 
-		for (int i = 0; i < _projectiles.size();) //moved i++ down
+		for (int i = 0; i < m_projectiles.size();) //moved i++ down
 		{
-			_projectiles[i].update();
-			if (_projectiles[i].update() == true)
+			m_projectiles[i].update();
+			if (m_projectiles[i].update() == true)
 			{
-				_projectiles[i] = _projectiles.back(); //Remove element when order doesn't matter
-				_projectiles.pop_back();
+				m_projectiles[i] = m_projectiles.back(); //Remove element when order doesn't matter
+				m_projectiles.pop_back();
 			}
 			else
 			{
 				i++;
 			}
 		}
-		_time += 0.015;
+		m_time += 0.015;
 		drawGame();
-		_fps = _fpsLimiter.end();
+		m_fps = m_fpsLimiter.end();
 
 		//Print every 10 frames
 		static int count = 0;
 		if (count == 999)
 		{
-			cout << _fps << endl; 
+			cout << m_fps << endl; 
 			count = 0;
 		}
 		count++;
@@ -83,60 +83,60 @@ void MainGame::processInput() {
 	while (SDL_PollEvent(&evnt)) {
 		switch (evnt.type) {
 			case SDL_QUIT:
-				_gameState = GameState::EXIT;
+				m_gameState = GameState::EXIT;
 				break;
 			case SDL_MOUSEMOTION:
-				_inputManager.setMouseCoords(evnt.motion.x, evnt.motion.y);
+				m_inputManager.setMouseCoords(evnt.motion.x, evnt.motion.y);
 				break;
 			case SDL_KEYDOWN:
-				_inputManager.pressKey(evnt.key.keysym.sym);
+				m_inputManager.pressKey(evnt.key.keysym.sym);
 				break;
 			case SDL_KEYUP:
-				_inputManager.releaseKey(evnt.key.keysym.sym);
+				m_inputManager.releaseKey(evnt.key.keysym.sym);
 				break;
 			case SDL_MOUSEBUTTONDOWN:
-				_inputManager.pressKey(evnt.button.button);
+				m_inputManager.pressKey(evnt.button.button);
 				break;
 			case SDL_MOUSEBUTTONUP:
-				_inputManager.releaseKey(evnt.button.button);
+				m_inputManager.releaseKey(evnt.button.button);
 				break;
 		}
 	}
 
 	//Now we will move continuously rather than just on an event. NOT BOUND BY EVENTS
 
-	if (_inputManager.isKeyPressed(SDLK_w))
+	if (m_inputManager.isKeyPressed(SDLK_w))
 	{
-		_camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, -CAMERA_SPEED));
+		m_camera.setPosition(m_camera.getPosition() + glm::vec2(0.0f, -CAMERA_SPEED));
 	}
-	if (_inputManager.isKeyPressed(SDLK_s))
+	if (m_inputManager.isKeyPressed(SDLK_s))
 	{
-		_camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
+		m_camera.setPosition(m_camera.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
 	}
-	if (_inputManager.isKeyPressed(SDLK_a))
+	if (m_inputManager.isKeyPressed(SDLK_a))
 	{
-		_camera.setPosition(_camera.getPosition() + glm::vec2(CAMERA_SPEED, 0.0f));
+		m_camera.setPosition(m_camera.getPosition() + glm::vec2(CAMERA_SPEED, 0.0f));
 	}
-	if (_inputManager.isKeyPressed(SDLK_d))
+	if (m_inputManager.isKeyPressed(SDLK_d))
 	{
-		_camera.setPosition(_camera.getPosition() + glm::vec2(-CAMERA_SPEED, 0.0f));
+		m_camera.setPosition(m_camera.getPosition() + glm::vec2(-CAMERA_SPEED, 0.0f));
 	}
-	if (_inputManager.isKeyPressed(SDLK_q))
+	if (m_inputManager.isKeyPressed(SDLK_q))
 	{
-		_camera.setScale(_camera.getScale() * SCALE_SPEED);
+		m_camera.setScale(m_camera.getScale() * SCALE_SPEED);
 	}
-	if (_inputManager.isKeyPressed(SDLK_e))
+	if (m_inputManager.isKeyPressed(SDLK_e))
 	{
-		_camera.setScale(_camera.getScale() / SCALE_SPEED);
+		m_camera.setScale(m_camera.getScale() / SCALE_SPEED);
 	}
-	if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT))
+	if (m_inputManager.isKeyPressed(SDL_BUTTON_LEFT))
 	{
-		glm::vec2 mouseCoords = _inputManager.getMouseCoords();
-		mouseCoords = _camera.convertScreenToWorldCoords(mouseCoords);
+		glm::vec2 mouseCoords = m_inputManager.getMouseCoords();
+		mouseCoords = m_camera.convertScreenToWorldCoords(mouseCoords);
 		glm::vec2 playerPosition(0.0f);
 		glm::vec2 direction = mouseCoords - playerPosition;
 		direction = glm::normalize(direction);
-		_projectiles.emplace_back(playerPosition, direction, 1.0f, 100);
+		m_projectiles.emplace_back(playerPosition, direction, 1.0f, 100);
 	}
 
 }
@@ -148,49 +148,49 @@ void MainGame::drawGame() {
 	//Clear the color and depth buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	_colorProgram.use();
+	m_colorProgram.use();
 	//Texture
 	glActiveTexture(GL_TEXTURE0); //Avoid multi texturing and use only first one. Look up multitexturing
-	GLint textureLocation = _colorProgram.getUniformLocation("mySampler");
+	GLint textureLocation = m_colorProgram.getUniformLocation("mySampler");
 	glUniform1i(textureLocation, 0); //User gl active texture 1;
 
 	//Uniform time
-	GLint timeLocation = _colorProgram.getUniformLocation("time"); //Will give error if time variable doesn't exist
-	glUniform1f(timeLocation, _time);//Handler to timeLocation in shader 
+	GLint timeLocation = m_colorProgram.getUniformLocation("time"); //Will give error if time variable doesn't exist
+	glUniform1f(timeLocation, m_time);//Handler to timeLocation in shader 
 
 	//Set the cameraMatrix
-	GLint orthographicProjectionMatrixLocation = _colorProgram.getUniformLocation("orthographicProjectionMatrix");
-	glm::mat4 cameraMatrix = _camera.getCameraMatrix();
+	GLint orthographicProjectionMatrixLocation = m_colorProgram.getUniformLocation("orthographicProjectionMatrix");
+	glm::mat4 cameraMatrix = m_camera.getCameraMatrix();
 
 	glUniformMatrix4fv(orthographicProjectionMatrixLocation, 1, GL_FALSE, &(cameraMatrix[0][0])); //Need address of first element of 2d array
 
-	_spriteBatch.begin();
+	m_spriteBatch.begin();
 
 	glm::vec4 pos(0.0f, 0.0f, 50.0f, 50.0f);
 	glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
 	static GameEngine2D::GLTexture texture = GameEngine2D::ResourceManager::getTexture("Textures/PNG/CharacterRight_Standing.png");
-	GameEngine2D::Color color;
+	GameEngine2D::ColorRGBA8 color;
 	color.r = 255;
 	color.g = 255;
 	color.b = 255;
 	color.a = 255;
 
-	_spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
+	m_spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
 
-	for (int i = 0; i < _projectiles.size(); i++)
+	for (int i = 0; i < m_projectiles.size(); i++)
 	{
-		_projectiles[i].draw(_spriteBatch);
+		m_projectiles[i].draw(m_spriteBatch);
 
 	}
 
-	_spriteBatch.end();
+	m_spriteBatch.end();
 
-	_spriteBatch.renderBatch();
+	m_spriteBatch.renderBatch();
 
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-	_colorProgram.unuse();
+	m_colorProgram.unuse();
 
 	//Swap our buffer.
-	_window.swapBuffer();
+	m_window.swapBuffer();
 }

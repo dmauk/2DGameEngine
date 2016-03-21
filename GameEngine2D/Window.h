@@ -19,9 +19,9 @@ namespace GameEngine2D {
 		void swapBuffer();
 
 	private:
-		SDL_Window* _sdlWindow;
-		int _screenWidth;
-		int _screenHeight;
+		SDL_Window* m_sdlWindow;
+		int m_screenWidth;
+		int m_screenHeight;
 	};
 
 }

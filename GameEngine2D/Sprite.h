@@ -18,12 +18,12 @@ namespace GameEngine2D {
 
 	private:
 
-		float _x;
-		float _y;
-		float _width;
-		float _height;
-		GLuint _vboID;
-		GLTexture _texture; //look up ref loading for textures
+		float m_x;
+		float m_y;
+		float m_width;
+		float m_height;
+		GLuint m_vboID;
+		GLTexture m_texture; //look up ref loading for textures
 	};
 
 }

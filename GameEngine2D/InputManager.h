@@ -17,8 +17,8 @@ namespace GameEngine2D {
 		void setMouseCoords(float x, float y);
 		glm::vec2 getMouseCoords();
 	private:
-		unordered_map<unsigned int, bool> _keyMap;
-		glm::vec2 _mouseCoords;
+		unordered_map<unsigned int, bool> m_keyMap;
+		glm::vec2 m_mouseCoords;
 	};
 }
 

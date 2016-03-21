@@ -5,10 +5,10 @@
 
 Projectile::Projectile(glm::vec2 pos, glm::vec2 dir, float speed, int lifeTime)
 {
-	_position = pos;
-	_direction = dir;
-	_speed = speed;
-	_lifeTime = lifeTime;
+	m_position = pos;
+	m_direction = dir;
+	m_speed = speed;
+	m_lifeTime = lifeTime;
 }
 
 
@@ -18,10 +18,10 @@ Projectile::~Projectile()
 
 void Projectile::draw(GameEngine2D::SpriteBatch& spriteBatch)
 {
-	glm::vec4 pos(_position.x,_position.y,30.0f, 30.0f);
+	glm::vec4 pos(m_position.x,m_position.y,30.0f, 30.0f);
 	glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
 	static GameEngine2D::GLTexture texture = GameEngine2D::ResourceManager::getTexture("Textures/PNG/CharacterRight_Standing.png");
-	GameEngine2D::Color color;
+	GameEngine2D::ColorRGBA8 color;
 	color.r = 255;
 	color.g = 255;
 	color.b = 255;
@@ -32,9 +32,9 @@ void Projectile::draw(GameEngine2D::SpriteBatch& spriteBatch)
 
 bool Projectile::update() //Return true when projectile needs to be destroyed.
 {
-	_position += _direction * _speed;
-	_lifeTime--;
-	if (_lifeTime == 0)
+	m_position += m_direction * m_speed;
+	m_lifeTime--;
+	if (m_lifeTime == 0)
 	{
 		return true;
 	}

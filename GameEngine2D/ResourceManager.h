@@ -12,7 +12,7 @@ namespace GameEngine2D {
 		static GLTexture getTexture(string textureFilePath);
 		//Have to make sure that a texture is not being rebound multiple times.
 	private:
-		static TextureCache _textureCache;
+		static TextureCache m_textureCache;
 	};
 
 }

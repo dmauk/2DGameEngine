@@ -16,18 +16,18 @@ namespace GameEngine2D {
 
 	void InputManager::pressKey(unsigned int keyID)
 	{
-		_keyMap[keyID] = true; //Rather than using insert
+		m_keyMap[keyID] = true; //Rather than using insert
 	}
 
 	void InputManager::releaseKey(unsigned int keyID)
 	{
-		_keyMap[keyID] = false;
+		m_keyMap[keyID] = false;
 	}
 
 	bool InputManager::isKeyPressed(unsigned int keyID)
 	{
-		auto it = _keyMap.find(keyID);
-		if (it != _keyMap.end())
+		auto it = m_keyMap.find(keyID);
+		if (it != m_keyMap.end())
 		{
 			return it->second; //Alternatively return true; Wouldn't necessarily work however because you could find a key that was released and say it is pressed.
 		}
@@ -39,13 +39,13 @@ namespace GameEngine2D {
 
 	void InputManager::setMouseCoords(float x, float y)
 	{
-		_mouseCoords.x = x;
-		_mouseCoords.y = y;
+		m_mouseCoords.x = x;
+		m_mouseCoords.y = y;
 	}
 
 	glm::vec2 InputManager::getMouseCoords()
 	{
-		return _mouseCoords;
+		return m_mouseCoords;
 	}
 
 }

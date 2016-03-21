@@ -17,11 +17,11 @@ namespace GameEngine2D {
 		void use();
 		void unuse();
 	private:
-		int _numAttributes;
 		void compileShader(const string& filePath, GLuint shaderID);
-		GLuint _programID;
-		GLuint _vertexShaderID;
-		GLuint _fragmentShaderID;
+		int m_numAttributes;
+		GLuint m_programID;
+		GLuint m_vertexShaderID;
+		GLuint m_fragmentShaderID;
 	};
 
 }

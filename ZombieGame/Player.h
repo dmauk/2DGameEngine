@@ -16,10 +16,10 @@ public:
 	//void update(GameEngine2D::InputManager& inputManager);
 	void update(const vector<string>& _levelData, vector<Human*>& _humans, vector<Zombie*>& _zombies); ///> LOOK UP C++ 11 OVERRIDE
 private:
-	GameEngine2D::InputManager * _inputManager;
-	vector<Gun*> _guns;
-	int _currentGun;
-	GameEngine2D::Camera2D* _camera;
-	vector<Bullet>* _bullets;
+	GameEngine2D::InputManager * m_inputManager;
+	vector<Gun*> m_guns;
+	int m_currentGun;
+	GameEngine2D::Camera2D* m_camera;
+	vector<Bullet>* m_bullets;
 };
 

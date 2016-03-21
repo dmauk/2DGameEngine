@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Level::Level(const string& filePath) : _playerSet(false)//ResourceManager dependency injection
+Level::Level(const string& filePath) : m_playerSet(false)//ResourceManager dependency injection
 {
 
 	ifstream file;
@@ -20,41 +20,41 @@ Level::Level(const string& filePath) : _playerSet(false)//ResourceManager depend
 
 	std::string tmp;
 	//Throw away first string in temp
-	file >> tmp >> _numHumans;
+	file >> tmp >> m_numHumans;
 
 
 	getline(file, tmp); //Throw away rest of line
 
 	while (getline(file, tmp))
 	{
-		_levelData.push_back(tmp);
+		m_levelData.push_back(tmp);
 	}
 
 	//Testing
-	for (int i = 0; i < _levelData.size(); i++)
+	for (int i = 0; i < m_levelData.size(); i++)
 	{
-		cout << _levelData[i] << endl;
+		cout << m_levelData[i] << endl;
 	}
 
 
 	glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
-	GameEngine2D::Color whiteColor; //Create class and constructor for this for simplicity;
+	GameEngine2D::ColorRGBA8 whiteColor; //Create class and constructor for this for simplicity;
 	whiteColor.r = 255;
 	whiteColor.g = 255;
 	whiteColor.b = 255;
 	whiteColor.a = 255;
-	_spriteBatch.init();
-	_spriteBatch.begin();
-	for (int y = 0; y < _levelData.size(); y++)
+	m_spriteBatch.init();
+	m_spriteBatch.begin();
+	for (int y = 0; y < m_levelData.size(); y++)
 	{
-		for (int x = 0; x < _levelData[y].size(); x++)
+		for (int x = 0; x < m_levelData[y].size(); x++)
 		{
 			if (y == 20)
 			{
 				//
 			}
 			//Grab the tile
-			char tile = _levelData[y][x];
+			char tile = m_levelData[y][x];
 
 			//Get dest rect
 			glm::vec4 destRect(x*TILE_WIDTH, y*TILE_WIDTH, TILE_WIDTH, TILE_WIDTH);
@@ -62,25 +62,25 @@ Level::Level(const string& filePath) : _playerSet(false)//ResourceManager depend
 			//Process the tile
 			switch (tile) {
 			case 'B':
-				_spriteBatch.draw(destRect, uvRect, GameEngine2D::ResourceManager::getTexture("Textures/red_bricks.png").id, 0.0f, whiteColor);
+				m_spriteBatch.draw(destRect, uvRect, GameEngine2D::ResourceManager::getTexture("Textures/red_bricks.png").id, 0.0f, whiteColor);
 				break;
 			case 'R':
-				_spriteBatch.draw(destRect, uvRect, GameEngine2D::ResourceManager::getTexture("Textures/red_bricks.png").id, 0.0f, whiteColor);
+				m_spriteBatch.draw(destRect, uvRect, GameEngine2D::ResourceManager::getTexture("Textures/red_bricks.png").id, 0.0f, whiteColor);
 				break;
 			case 'G':
-				_spriteBatch.draw(destRect, uvRect, GameEngine2D::ResourceManager::getTexture("Textures/glass.png").id, 0.0f, whiteColor);
+				m_spriteBatch.draw(destRect, uvRect, GameEngine2D::ResourceManager::getTexture("Textures/glass.png").id, 0.0f, whiteColor);
 				break;
 			case 'L':
-				_spriteBatch.draw(destRect, uvRect, GameEngine2D::ResourceManager::getTexture("Textures/light_bricks.png").id, 0.0f, whiteColor);
+				m_spriteBatch.draw(destRect, uvRect, GameEngine2D::ResourceManager::getTexture("Textures/light_bricks.png").id, 0.0f, whiteColor);
 				break;
 			case '@':
-				_levelData[y][x] = '.';
-				_startPlayerPos.x = x * TILE_WIDTH;
-				_startPlayerPos.y = y * TILE_WIDTH;
+				m_levelData[y][x] = '.';
+				m_startPlayerPos.x = x * TILE_WIDTH;
+				m_startPlayerPos.y = y * TILE_WIDTH;
 				break;
 			case 'Z':
-				_levelData[y][x] = '.';
-				_zombiePositions.emplace_back(x*TILE_WIDTH, y*TILE_WIDTH);
+				m_levelData[y][x] = '.';
+				m_zombiePositions.emplace_back(x*TILE_WIDTH, y*TILE_WIDTH);
 				break;
 			case '.':
 
@@ -92,7 +92,7 @@ Level::Level(const string& filePath) : _playerSet(false)//ResourceManager depend
 	}
 
 
-	_spriteBatch.end();
+	m_spriteBatch.end();
 }
 
 
@@ -102,5 +102,5 @@ Level::~Level()
 
 void Level::draw()
 {
-	_spriteBatch.renderBatch();
+	m_spriteBatch.renderBatch();
 }

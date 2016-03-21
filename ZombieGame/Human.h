@@ -8,7 +8,7 @@ public:
 	virtual void update(const vector<string>& levelData, vector<Human*>& _humans, vector<Zombie*>& _zombies);
 	void init(float health, float speed, glm::vec2 position);
 private:
-	glm::vec2 _direction;
+	glm::vec2 m_direction;
 
 };
 

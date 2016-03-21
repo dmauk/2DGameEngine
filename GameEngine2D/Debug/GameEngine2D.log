@@ -1,5 +1,18 @@
-﻿  SpriteBatch.cpp
+﻿  Window.cpp
+  Timing.cpp
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\gameengine2d\timing.cpp(29): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\gameengine2d\timing.cpp(32): warning C4244: 'argument': conversion from 'float' to 'Uint32', possible loss of data
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\gameengine2d\timing.cpp(43): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\gameengine2d\timing.cpp(45): warning C4244: '=': conversion from 'Uint32' to 'float', possible loss of data
+  TextureCache.cpp
+  SpriteBatch.cpp
 c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\gameengine2d\spritebatch.cpp(38): warning C4018: '<': signed/unsigned mismatch
 c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\gameengine2d\spritebatch.cpp(63): warning C4018: '<': signed/unsigned mismatch
 c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\gameengine2d\spritebatch.cpp(93): warning C4018: '<': signed/unsigned mismatch
+  Sprite.cpp
+  ResourceManager.cpp
+  InputManager.cpp
+  GLSLProgram.cpp
+  Camera2D.cpp
+  Generating Code...
   GameEngine2D.vcxproj -> C:\Users\swfan\Documents\Visual Studio 2015\Projects\2DGameEngine\Debug\GameEngine2D.lib

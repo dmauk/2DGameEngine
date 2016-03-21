@@ -12,9 +12,9 @@ namespace GameEngine2D {
 		float end(); //Will return fps
 	private:
 		void calculateFPS();
-		float _maxFPS;
-		unsigned int _startTicks; //unsigned int is not guaranteed to be 4 bytes.
-		float _frameTime;
-		float _fps;
+		float m_maxFPS;
+		unsigned int m_startTicks; //unsigned int is not guaranteed to be 4 bytes.
+		float m_frameTime;
+		float m_fps;
 	};
 }

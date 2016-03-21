@@ -19,16 +19,16 @@ public:
 	~Bullet();
 	bool update(vector<Human*>& humans, vector<Zombie*>& zombies, const vector<string>& levelData);
 	void draw(GameEngine2D::SpriteBatch& spriteBatch); 
-	float getDamage() { return _damage; };
+	float getDamage() { return m_damage; };
 	bool collidewWithAgent(Agent* agent);
 
 private:
 	bool collideWithLevel(const vector<string>& levelData);
 	void collideWithTile(glm::vec2 tilePosition);
-	float _damage;
-	glm::vec2 _position;
-	glm::vec2 _direction;
-	float _speed;
-	float _duration; ///< Bullet life time in frames
+	float m_damage;
+	glm::vec2 m_position;
+	glm::vec2 m_direction;
+	float m_speed;
+	float m_duration; ///< Bullet life time in frames
 };
 

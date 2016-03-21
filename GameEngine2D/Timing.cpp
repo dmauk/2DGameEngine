@@ -15,24 +15,24 @@ namespace GameEngine2D {
 
 	void FpsLimiter::setMaxFPS(float maxFPS)
 	{
-		_maxFPS = maxFPS;
+		m_maxFPS = maxFPS;
 	}
 
 	void FpsLimiter::begin()
 	{
-		_startTicks = SDL_GetTicks();
+		m_startTicks = SDL_GetTicks();
 	}
 	float FpsLimiter::end()
 	{
 		calculateFPS();
 		//Limit FPS //Already handled by vsync however
-		float frameTicks = SDL_GetTicks() - _startTicks;
-		if (1000.0f / _maxFPS > frameTicks)
+		float frameTicks = SDL_GetTicks() - m_startTicks;
+		if (1000.0f / m_maxFPS > frameTicks)
 		{
-			SDL_Delay(1000.0f / _maxFPS - frameTicks); // 1s / 60 = every 0.0166 second we have a frame. So every 1000*0.0166 = 16.66ms we have one frame. 
+			SDL_Delay(1000.0f / m_maxFPS - frameTicks); // 1s / 60 = every 0.0166 second we have a frame. So every 1000*0.0166 = 16.66ms we have one frame. 
 		}											   // if we have more frames in a shorter ms interval then we want to delay to the standard 60s interval. 
 
-		return _fps;
+		return m_fps;
 	}
 
 	void FpsLimiter::calculateFPS()
@@ -43,8 +43,8 @@ namespace GameEngine2D {
 		static float prevTicks = SDL_GetTicks();
 		float currentTicks;
 		currentTicks = SDL_GetTicks();
-		_frameTime = currentTicks - prevTicks; //Will be incorrect on the first reading because it will be 0
-		frameTimes[currentBufferLocation%NUM_SAMPLES] = _frameTime; //Use modulus to do a circular buffer.
+		m_frameTime = currentTicks - prevTicks; //Will be incorrect on the first reading because it will be 0
+		frameTimes[currentBufferLocation%NUM_SAMPLES] = m_frameTime; //Use modulus to do a circular buffer.
 
 		prevTicks = currentTicks;//Update previous ticks.
 		int count;
@@ -67,11 +67,11 @@ namespace GameEngine2D {
 
 		if (frameAverage > 0)
 		{
-			_fps = 1000.0f / frameAverage; //frameAverage = FPMS -> How many frames is that a second? 1 second = 1000 ms so 1000 / FPMS = FPS
+			m_fps = 1000.0f / frameAverage; //frameAverage = FPMS -> How many frames is that a second? 1 second = 1000 ms so 1000 / FPMS = FPS
 		}
 		else
 		{
-			_fps = 60.0f; //This will only occur in the first case when the frame calculation will divide by zero
+			m_fps = 60.0f; //This will only occur in the first case when the frame calculation will divide by zero
 		}
 	}
 

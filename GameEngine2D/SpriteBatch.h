@@ -14,7 +14,7 @@ namespace GameEngine2D {
 	class Glyph {
 	public:
 		Glyph() {};
-		Glyph(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint Texture, float Depth, const Color& color) : texture(Texture), depth(Depth) {
+		Glyph(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint Texture, float Depth, const ColorRGBA8& color) : texture(Texture), depth(Depth) {
 
 			topLeft.color = color;
 			topLeft.setPosition(destRect.x, destRect.y + destRect.w); //
@@ -60,7 +60,7 @@ namespace GameEngine2D {
 		void begin(GlyphSortType sortType = GlyphSortType::TEXTURE);
 		void end(); //Post-process
 		
-		void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color);
+		void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const ColorRGBA8& color);
 		void renderBatch();
 	private:
 		void createRenderBatches();
@@ -71,12 +71,12 @@ namespace GameEngine2D {
 		static bool compareFrontToBack(Glyph* a, Glyph* b);
 		static bool compareBackToFront(Glyph* a, Glyph* b);
 		static bool compareTexture(Glyph* a, Glyph* b);
-		GlyphSortType _sortType;
-		GLuint _vbo;
-		GLuint _vao;
-		vector<Glyph*> _glyphPointers; //for sorting glyphs for rendering
-		vector<Glyph> _glyphs;
-		vector<RenderBatch> _renderBatches;
+		GlyphSortType m_sortType;
+		GLuint m_vbo;
+		GLuint m_vao;
+		vector<Glyph*> m_glyphPointers; //for sorting glyphs for rendering
+		vector<Glyph> m_glyphs;
+		vector<RenderBatch> m_renderBatches;
 	};
 	
 }
