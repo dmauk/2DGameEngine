@@ -105,31 +105,31 @@ void MainGame::processInput() {
 
 	//Now we will move continuously rather than just on an event. NOT BOUND BY EVENTS
 
-	if (m_inputManager.isKeyPressed(SDLK_w))
+	if (m_inputManager.isKeyDown(SDLK_w))
 	{
 		m_camera.setPosition(m_camera.getPosition() + glm::vec2(0.0f, -CAMERA_SPEED));
 	}
-	if (m_inputManager.isKeyPressed(SDLK_s))
+	if (m_inputManager.isKeyDown(SDLK_s))
 	{
 		m_camera.setPosition(m_camera.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
 	}
-	if (m_inputManager.isKeyPressed(SDLK_a))
+	if (m_inputManager.isKeyDown(SDLK_a))
 	{
 		m_camera.setPosition(m_camera.getPosition() + glm::vec2(CAMERA_SPEED, 0.0f));
 	}
-	if (m_inputManager.isKeyPressed(SDLK_d))
+	if (m_inputManager.isKeyDown(SDLK_d))
 	{
 		m_camera.setPosition(m_camera.getPosition() + glm::vec2(-CAMERA_SPEED, 0.0f));
 	}
-	if (m_inputManager.isKeyPressed(SDLK_q))
+	if (m_inputManager.isKeyDown(SDLK_q))
 	{
 		m_camera.setScale(m_camera.getScale() * SCALE_SPEED);
 	}
-	if (m_inputManager.isKeyPressed(SDLK_e))
+	if (m_inputManager.isKeyDown(SDLK_e))
 	{
 		m_camera.setScale(m_camera.getScale() / SCALE_SPEED);
 	}
-	if (m_inputManager.isKeyPressed(SDL_BUTTON_LEFT))
+	if (m_inputManager.isKeyDown(SDL_BUTTON_LEFT))
 	{
 		glm::vec2 mouseCoords = m_inputManager.getMouseCoords();
 		mouseCoords = m_camera.convertScreenToWorldCoords(mouseCoords);

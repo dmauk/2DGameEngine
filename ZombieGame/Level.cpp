@@ -38,11 +38,8 @@ Level::Level(const string& filePath) : m_playerSet(false)//ResourceManager depen
 
 
 	glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
-	GameEngine2D::ColorRGBA8 whiteColor; //Create class and constructor for this for simplicity;
-	whiteColor.r = 255;
-	whiteColor.g = 255;
-	whiteColor.b = 255;
-	whiteColor.a = 255;
+	GameEngine2D::ColorRGBA8 whiteColor(255,255,255,255); //Create class and constructor for this for simplicity;
+	GameEngine2D::ColorRGBA8 color(100,100,100,255);
 	m_spriteBatch.init();
 	m_spriteBatch.begin();
 	for (int y = 0; y < m_levelData.size(); y++)
@@ -77,13 +74,15 @@ Level::Level(const string& filePath) : m_playerSet(false)//ResourceManager depen
 				m_levelData[y][x] = '.';
 				m_startPlayerPos.x = x * TILE_WIDTH;
 				m_startPlayerPos.y = y * TILE_WIDTH;
+				m_spriteBatch.draw(destRect, uvRect, GameEngine2D::ResourceManager::getTexture("Textures/light_bricks.png").id, 0.0f, color);
 				break;
 			case 'Z':
 				m_levelData[y][x] = '.';
 				m_zombiePositions.emplace_back(x*TILE_WIDTH, y*TILE_WIDTH);
+				m_spriteBatch.draw(destRect, uvRect, GameEngine2D::ResourceManager::getTexture("Textures/light_bricks.png").id, 0.0f, color);
 				break;
 			case '.':
-
+				m_spriteBatch.draw(destRect, uvRect, GameEngine2D::ResourceManager::getTexture("Textures/red_bricks.png").id, 0.0f, color);
 				break;
 			default:
 				cout << "UNEXPECTED SYMBOL" << tile << "@" << x << " " << y << endl;

@@ -115,18 +115,13 @@ void MainGame::gameLoop()
 	while (m_gameState != GameState::EXIT)
 	{
 		m_fpsLimiter.begin();
-		processInput();
-		if (m_gameState != GameState::PAUSE)
-		{
-			
-			
-			updateAgents();
-			updateBullets();
-			m_camera.setPosition(m_player->getPosition());
-			m_camera.update();
-			drawGame();
-			
-		}
+		m_inputManager.update();
+		processInput();	
+		updateAgents();
+		updateBullets();
+		m_camera.setPosition(m_player->getPosition());
+		m_camera.update();
+		drawGame();
 		m_fps = m_fpsLimiter.end();
 	}
 }
