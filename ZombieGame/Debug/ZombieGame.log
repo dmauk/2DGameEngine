@@ -1,7 +1,34 @@
-﻿  Level.cpp
-c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\level.cpp(34): warning C4018: '<': signed/unsigned mismatch
-c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\level.cpp(45): warning C4018: '<': signed/unsigned mismatch
-c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\level.cpp(47): warning C4018: '<': signed/unsigned mismatch
-c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\level.cpp(75): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\level.cpp(76): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+﻿  MainGame.cpp
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(23): warning C4018: '<': signed/unsigned mismatch
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(28): warning C4018: '<': signed/unsigned mismatch
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(33): warning C4018: '<': signed/unsigned mismatch
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(68): warning C4244: 'argument': conversion from 'const int' to 'float', possible loss of data
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(71): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(82): warning C4244: 'argument': conversion from 'const int' to 'float', possible loss of data
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(87): warning C4018: '<': signed/unsigned mismatch
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(90): warning C4244: 'argument': conversion from 'const int' to 'float', possible loss of data
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(155): warning C4018: '<': signed/unsigned mismatch
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(160): warning C4018: '<': signed/unsigned mismatch
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(165): warning C4018: '<': signed/unsigned mismatch
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(190): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(212): warning C4018: '<': signed/unsigned mismatch
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(218): warning C4018: '<': signed/unsigned mismatch
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(223): warning C4018: '<': signed/unsigned mismatch
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(225): warning C4018: '<': signed/unsigned mismatch
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(229): warning C4018: '<': signed/unsigned mismatch
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(235): warning C4244: 'argument': conversion from 'const int' to 'float', possible loss of data
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(250): warning C4018: '<': signed/unsigned mismatch
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(252): warning C4018: '<': signed/unsigned mismatch
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(261): warning C4018: '<': signed/unsigned mismatch
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(274): warning C4018: '<': signed/unsigned mismatch
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(276): warning C4018: '<': signed/unsigned mismatch
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(280): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(302): warning C4018: '<': signed/unsigned mismatch
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\maingame.cpp(306): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  Generating Code...
+  Compiling...
+  main.cpp
+  Player.cpp
+c:\users\swfan\documents\visual studio 2015\projects\2dgameengine\zombiegame\player.cpp(68): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
   ZombieGame.vcxproj -> C:\Users\swfan\Documents\Visual Studio 2015\Projects\2DGameEngine\Debug\ZombieGame.exe
