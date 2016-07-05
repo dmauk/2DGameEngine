@@ -17,9 +17,10 @@ class Bullet
 public:
 	Bullet(glm::vec2 position, glm::vec2 direction, float damage, float speed, float duration);
 	~Bullet();
-	bool update(vector<Human*>& humans, vector<Zombie*>& zombies, const vector<string>& levelData);
+	bool update(vector<Human*>& humans, vector<Zombie*>& zombies, const vector<string>& levelData, float deltaTime);
+	glm::vec2 getPosition() { return m_position;  }
 	void draw(GameEngine2D::SpriteBatch& spriteBatch); 
-	float getDamage() { return m_damage; };
+	float getDamage() const { return m_damage; };
 	bool collidewWithAgent(Agent* agent);
 
 private:

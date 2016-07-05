@@ -104,8 +104,7 @@ void Agent::draw(GameEngine2D::SpriteBatch& spriteBatch)
 {
 	glm::vec4 destRect(m_position.x, m_position.y, AGENT_WIDTH, AGENT_WIDTH);
 	const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
-	static GameEngine2D::GLTexture texture = GameEngine2D::ResourceManager::getTexture("Textures/circle.png");
-	spriteBatch.draw(destRect, uvRect, texture.id, 0.0f, m_color);
+	spriteBatch.draw(destRect, uvRect, m_textureID, 0.0f, m_color, m_direction);
 }
 
 bool Agent::collidewWithAgent(Agent* agent)

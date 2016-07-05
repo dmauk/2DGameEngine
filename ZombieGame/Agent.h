@@ -16,7 +16,7 @@ class Agent
 public:
 	Agent();
 	virtual ~Agent();
-	virtual void update(const vector<string>& levelData, vector<Human*>& humans, vector<Zombie*>& zombies) = 0;
+	virtual void update(const vector<string>& levelData, vector<Human*>& humans, vector<Zombie*>& zombies, float deltaTime) = 0;
 	bool collideWithLevel(const vector<string>& levelData);
 	bool collidewWithAgent(Agent* agent); //maybe store a vector of agents instead?
 	void draw(GameEngine2D::SpriteBatch& _spriteBatch);
@@ -26,10 +26,11 @@ protected:
 	void checkTilePosition(const vector<string>& levelData, vector<glm::vec2>& collideTilePositions, float x, float y);
 	void collideWithTile(glm::vec2 tilePosition);
 	glm::vec2 m_position;
+	glm::vec2 m_direction = glm::vec2(1.0f, 0.0f);
 	float m_speed;
 	float m_health;
-	glm::vec2 m_direction;
 	GameEngine2D::ColorRGBA8 m_color;
+	GLuint m_textureID;
 	//GLTexture _texture; ///> Not used because agent will use the same texture so there's no point in making copies. 
 };
 

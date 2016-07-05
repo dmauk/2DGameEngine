@@ -1,0 +1,5 @@
+﻿  MainGame.cpp
+c:\users\dan\documents\visual studio 2015\projects\2dgameengine\gameengine2d\gltexture.h(6): warning C4099: 'GameEngine2D::GLTexture': type name first seen using 'class' now seen using 'struct'
+  c:\users\dan\documents\visual studio 2015\projects\2dgameengine\gameengine2d\gltexture.h(6): note: see declaration of 'GameEngine2D::GLTexture'
+  BallGame.vcxproj -> C:\Users\Dan\Documents\Visual Studio 2015\Projects\2DGameEngine\Debug\BallGame.exe
+  BallGame.vcxproj -> C:\Users\Dan\Documents\Visual Studio 2015\Projects\2DGameEngine\Debug\BallGame.pdb (Full PDB)

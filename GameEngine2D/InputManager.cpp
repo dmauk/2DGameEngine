@@ -60,7 +60,7 @@ namespace GameEngine2D {
 
 	void InputManager::update()
 	{
-		for (auto iter = m_currentKeyMap.begin(); iter != m_currentKeyMap.end(); iter++) //alternative for(auto& it : m_currentKeyMap)
+		for (auto iter = m_currentKeyMap.begin(); iter != m_currentKeyMap.end(); iter++) //alternative for(auto& it : m_currentKeyMap) <-- C++ 11 Foreach
 		{
 			m_previousKeyMap[iter->first] = iter->second;
 		}

@@ -13,6 +13,8 @@ namespace GameEngine2D {
 		void init(int screenWidth, int screenHeight);
 		void update();
 
+		bool isBoxInView(const glm::vec2& position, const glm::vec2& dimension);
+
 		//Setters
 		void setPosition(glm::vec2& newPosition) { m_position = newPosition; m_needMatrixUpdate = true; }
 		void setScale(float newScale) { m_scale = newScale; m_needMatrixUpdate = true; }

@@ -44,5 +44,31 @@ namespace GameEngine2D {
 
 		return screenCoords;
 	}
+
+	bool Camera2D::isBoxInView(const glm::vec2& position, const glm::vec2& dimensions)
+	{
+		glm::vec2 scaledScreenDimensions = glm::vec2(m_screenWidth, m_screenHeight) / m_scale;
+		//Minimum distance before a colision will occur
+		const float MIN_DISTANCE_X = dimensions.x / 2.0f + scaledScreenDimensions.x / 2.0f;
+		const float MIN_DISTANCE_Y = dimensions.y / 2.0f + scaledScreenDimensions.y / 2.0f;
+
+		//Center positions
+		glm::vec2 centerPosition = position + (dimensions / 2.0f);
+		glm::vec2 centerCameraPosition = m_position;
+
+		//Vector from the input to the camera
+		glm::vec2 distVec = centerPosition - centerCameraPosition;
+
+		//Get the depth of the collision
+		float xDepth = MIN_DISTANCE_X - abs(distVec.x);
+		float yDepth = MIN_DISTANCE_Y - abs(distVec.y);
+
+		if (xDepth > 0 && yDepth > 0) //Collision
+		{
+			//There was a collision
+			return true;
+		}
+		return false;
+	}
 	
 }

@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AudioEngine.cpp" />
     <ClCompile Include="Camera2D.cpp" />
     <ClCompile Include="ErrorHandling.cpp" />
     <ClCompile Include="GameEngine2D.cpp" />
@@ -146,15 +147,19 @@
     <ClCompile Include="ImageLoader.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="IOManager.cpp" />
+    <ClCompile Include="ParticleBatch2D.cpp" />
+    <ClCompile Include="ParticleEngine2D.cpp" />
     <ClCompile Include="picoPNG.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="SpriteBatch.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="SpriteFont.cpp" />
     <ClCompile Include="TextureCache.cpp" />
     <ClCompile Include="Timing.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="Camera2D.h" />
     <ClInclude Include="ErrorHandling.h" />
     <ClInclude Include="GameEngine2D.h" />
@@ -163,10 +168,13 @@
     <ClInclude Include="ImageLoader.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="IOManager.h" />
+    <ClInclude Include="ParticleBatch2D.h" />
+    <ClInclude Include="ParticleEngine2D.h" />
     <ClInclude Include="picoPNG.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SpriteBatch.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="SpriteFont.h" />
     <ClInclude Include="TextureCache.h" />
     <ClInclude Include="Timing.h" />
     <ClInclude Include="Vertex.h" />

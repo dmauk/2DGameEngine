@@ -17,14 +17,14 @@ Bullet::~Bullet()
 {
 }
 
-bool Bullet::update(vector<Human*>& humans, vector<Zombie*>& zombies, const vector<string>& levelData)
+bool Bullet::update(vector<Human*>& humans, vector<Zombie*>& zombies, const vector<string>& levelData, float deltaTime)
 {
 	m_duration-= 1.0f;
 	if (m_duration == 0)
 	{
 		return true; //Delete bullet
 	}
-	m_position += m_direction * m_speed;
+	m_position += m_direction * m_speed * deltaTime;
 
 	return (collideWithLevel(levelData));
 	
